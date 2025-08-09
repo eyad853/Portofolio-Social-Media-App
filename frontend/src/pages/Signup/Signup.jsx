@@ -6,8 +6,6 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal'; // Ensure Modal is imported
 
-Modal.setAppElement('#root'); // Set the root element for React-Modal
-
 const Signup = () => {
     const navigate = useNavigate();
     const [firstname, setFirstname] = useState("");
