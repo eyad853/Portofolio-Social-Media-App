@@ -1,6 +1,5 @@
 import {BrowserRouter as Router , Routes , Route} from "react-router-dom"
 import React, { useEffect, useState } from 'react'
-import Signup from "./pages/SignUp/SignUp"
 import Login from "./pages/Login/Login"
 import HomeLayOut from "./pages/HomeLayOut/HomeLayOut"
 import Home from "./pages/HomeLayOut/Home"
@@ -15,6 +14,7 @@ import Chats from "./pages/HomeLayOut/Chats"
 import SharedPost from "./pages/HomeLayOut/SharedPost"
 import CreateTextStoryPage from "./pages/HomeLayOut/CreateTextStoryPage"
 import StoryView from "./pages/HomeLayOut/StoryView"
+import Signup from './pages/SignUp/SignUp'
 Modal.setAppElement('#root')
 
 
