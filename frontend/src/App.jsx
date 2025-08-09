@@ -1,6 +1,6 @@
 import {BrowserRouter as Router , Routes , Route} from "react-router-dom"
 import React, { useEffect, useState } from 'react'
-import SignUp from "./pages/SignUp/SignUp"
+import Signup from "./pages/SignUp/SignUp"
 import Login from "./pages/Login/Login"
 import HomeLayOut from "./pages/HomeLayOut/HomeLayOut"
 import Home from "./pages/HomeLayOut/Home"
@@ -122,7 +122,7 @@ const fetchAllPosts = async()=>{
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignUp/>}/>
+        <Route path="/" element={<Signup/>}/>
         <Route path="/login"  element={<Login />}/>
         <Route path="/home"   element={<HomeLayOut />}>
           <Route index element={
