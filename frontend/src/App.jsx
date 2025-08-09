@@ -14,7 +14,7 @@ import Chats from "./pages/HomeLayOut/Chats"
 import SharedPost from "./pages/HomeLayOut/SharedPost"
 import CreateTextStoryPage from "./pages/HomeLayOut/CreateTextStoryPage"
 import StoryView from "./pages/HomeLayOut/StoryView"
-import Signup from './pages/SignUp/SignUp'
+import Signup from './pages/Signup/Signup'
 Modal.setAppElement('#root')
 
 
