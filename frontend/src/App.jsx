@@ -122,7 +122,7 @@ const fetchAllPosts = async()=>{
   return (
     <Router>
       <Routes>
-        <Route path="/signup" element={<SignUp/>}/>
+        <Route path="/" element={<SignUp/>}/>
         <Route path="/login"  element={<Login />}/>
         <Route path="/home"   element={<HomeLayOut />}>
           <Route index element={
