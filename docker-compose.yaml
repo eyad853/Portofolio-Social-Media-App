@@ -1,0 +1,21 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+    networks:
+      - myprojects
+
+  socialmedia:
+    build: backend/
+    ports:
+      - 8000:8000
+    restart: always
+    networks:
+      - myprojects
+    env_file:
+    - ./backend/.env
+networks:
+  myprojects:
