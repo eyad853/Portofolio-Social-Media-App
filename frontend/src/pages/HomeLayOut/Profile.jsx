@@ -31,7 +31,7 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
   const [expandedPosts, setExpandedPosts] = useState({});
   const [expandedMedia, setExpandedMedia] = useState({});
 
-  const API_URL = 'http://localhost:8000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
 
    useEffect(() => {
   
@@ -145,7 +145,7 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
 
   const fetchAllPosts = async() => {
     try {
-      const response = await axios.get('http://localhost:8000/post/getAll' ,{withCredentials:true})
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/post/getAll` ,{withCredentials:true})
       setPosts(response.data.posts)
     } catch(err) {
       console.log(err);
@@ -178,7 +178,7 @@ const handleCoverPhotoUpload = async (e) => {
 
   try {
     const response = await axios.patch(
-      'http://localhost:8000/updateUserProfile',
+      `${import.meta.env.VITE_BACKEND_URL}/updateUserProfile`,
       formData,
       {
         withCredentials: true,
@@ -220,7 +220,7 @@ const handleAvatarUpload = async (e) => {
   formData.append('avatar', file)
   try {
     const response = await axios.patch(
-      'http://localhost:8000/updateUserProfile',
+      `${import.meta.env.VITE_BACKEND_URL}/updateUserProfile`,
       formData,
       {
         withCredentials: true,
@@ -447,7 +447,7 @@ try {
                                                         <div className="w-full relative">
                                                             <div className={`w-full ${isExpanded ? '' : 'max-h-60 sm:max-h-80'} overflow-hidden`}>
                                                                 <img
-                                                                    src={`http://localhost:8000${mediaItem.url}`}
+                                                                    src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
                                                                     alt=""
                                                                     className="w-full object-cover"
                                                                 />
@@ -465,7 +465,7 @@ try {
                                                         <div className="w-full relative">
                                                             <div className={`w-full ${isExpanded ? '' : 'max-h-60 sm:max-h-80'} overflow-hidden`}>
                                                                 <video
-                                                                    src={`http://localhost:8000${mediaItem.url}`}
+                                                                    src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
                                                                     controls
                                                                     className="w-full object-cover"
                                                                 />

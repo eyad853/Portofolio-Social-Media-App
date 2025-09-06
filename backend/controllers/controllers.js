@@ -137,15 +137,15 @@ export const firstGoogleRoute = passport.authenticate("google" , {
 })
 
 export const secondGoogleRoute =  passport.authenticate('google', {
-    successRedirect: `http://${process.env.vercelDomain}/home`, // Redirect if authentication succeeds
-    failureRedirect: `http://${process.env.vercelDomain}/login`,    // Redirect if authentication fails
+    successRedirect: `${process.env.vercelDomain}/home`, // Redirect if authentication succeeds
+    failureRedirect: `${process.env.vercelDomain}/login`,    // Redirect if authentication fails
 })
 
 export const firstGithubRoute = passport.authenticate('github' ,  { scope: ['user:email'] })
 
 export const secondGithubRoute =  passport.authenticate('github', { 
-   successRedirect: `http://${process.env.vercelDomain}/home`, // No spaces, just the URL
-failureRedirect: `http://${process.env.vercelDomain}/login`
+   successRedirect: `${process.env.vercelDomain}/home`, // No spaces, just the URL
+failureRedirect: `${process.env.vercelDomain}/login`
 }
 )
 

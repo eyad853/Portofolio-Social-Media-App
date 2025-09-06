@@ -19,7 +19,7 @@ const StoryPart = ({ stories, setStories, user, darkMode,setShowSM }) => {
     formData.append('story', file);
 
     try {
-      const res = await axios.post('http://localhost:8000/story/create', formData, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/story/create`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',

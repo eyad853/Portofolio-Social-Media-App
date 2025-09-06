@@ -40,7 +40,7 @@ const P_Links_Modal = ({isLinksModalOpen , setLinksModalOpen,user , setUser}) =>
         try{
           setUser(prev=>({...prev , socialLinks:linkValues}))
           setLinksModalOpen(false)
-          const response = await axios.patch(`http://localhost:8000/updateUserProfile` , {socialLinks:linkValues} , {withCredentials:true})
+          const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/updateUserProfile` , {socialLinks:linkValues} , {withCredentials:true})
           if (response){
             console.log(response.data);
           }

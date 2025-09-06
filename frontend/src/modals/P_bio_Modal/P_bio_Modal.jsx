@@ -10,7 +10,7 @@ const P_bio_Modal = ({isBioModalOpen,setIsBioModalOpen,user, setUser}) => {
         try{
           setUser(prev=>({...prev , bio}))
           setIsBioModalOpen(false)
-          const response = await axios.patch(`http://localhost:8000/updateUserProfile` , {bio} , {withCredentials:true})
+          const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/updateUserProfile` , {bio} , {withCredentials:true})
           if (response){
             console.log(response.data);
           }

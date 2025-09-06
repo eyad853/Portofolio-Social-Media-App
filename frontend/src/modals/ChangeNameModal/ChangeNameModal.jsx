@@ -16,7 +16,7 @@ const ChangeNameModal = ({ isOpen, setIsOpen, setUser, darkMode, showMessage }) 
             setUser(prev => ({ ...prev, username: name })); // Instant UI update
             setIsOpen(false);
             setName('');
-            const response = await axios.patch('http://localhost:8000/settings/updateUserInfo', { name }, { withCredentials: true }); // Changed 'name' to 'username' to match
+            const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/settings/updateUserInfo`, { name }, { withCredentials: true }); // Changed 'name' to 'username' to match
             showMessage(response.data.message || 'Username updated successfully!');
         } catch (err) {
             console.error('Error updating name:', err);

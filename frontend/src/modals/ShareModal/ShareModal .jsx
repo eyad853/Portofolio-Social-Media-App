@@ -3,7 +3,7 @@ import { FaFacebook, FaWhatsapp, FaTwitter, FaLink } from 'react-icons/fa';
 import { GoCopy } from "react-icons/go";
 
 const ShareModal = ({ isShareModalOpen, setIsShareModalOpen, post, darkMode }) => {
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:5173';
+    const baseUrl = window.location.origin;
     const postUrl = `${baseUrl}/home/post/shared/${post?._id}`;
     const encodedUrl = encodeURIComponent(postUrl);
 

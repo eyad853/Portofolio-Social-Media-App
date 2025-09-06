@@ -16,11 +16,11 @@ const Login = () => {
 
     // OAuth handlers remain the same
     const handleSignUpWithGoogle = () => {
-        window.location.href = "http://localhost:8000/auth/google";
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
     };
 
     const handleSignUpWithGithub = () => {
-        window.location.href = "http://localhost:8000/auth/github";
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/github`;
     };
 
     // --- THIS IS THE KEY NEW/MODIFIED PART FOR LOCAL LOGIN ---
@@ -30,7 +30,7 @@ const Login = () => {
         setErrorMessage(""); // Clear any previous error messages
 
         try {
-            const response = await axios.post('http://localhost:8000/login', {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, {
                 // Axios will automatically stringify this JavaScript object into JSON
                 // and set the 'Content-Type: application/json' header.
                 email,
@@ -80,9 +80,6 @@ const Login = () => {
 
                 {/* Local Login Form - MODIFIED */}
                 <form
-                    // REMOVED: action="http://localhost:8000/login"
-                    // REMOVED: method="POST"
-                    // REMOVED: encType="multipart/form-data"
                     onSubmit={handleLocalLogin} // <-- IMPORTANT: Added this handler to control submission
                     className='w-full flex flex-1 flex-col' // Adjusted for better flex behavior if needed
                 >

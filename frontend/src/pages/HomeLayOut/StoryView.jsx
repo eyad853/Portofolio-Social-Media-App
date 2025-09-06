@@ -49,7 +49,7 @@ const StoryView = ({ stories, setStories }) => {
   const deleteStory = async (storyId) => {
     setLoading(true);
     try {
-      const response = await axios.delete(`http://localhost:8000/story/delete/${storyId}`, {
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/story/delete/${storyId}`, {
         withCredentials: true
       });
       

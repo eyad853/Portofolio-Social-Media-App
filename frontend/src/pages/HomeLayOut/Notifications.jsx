@@ -11,7 +11,7 @@ const Notifications = ({user , socket , setTrigger, darkMode}) => {
     // Mark notifications as seen on page load
     const markAsSeen = async () => {
       try {
-        await axios.post('http://localhost:8000/notifications/markAsSeen', {}, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/notifications/markAsSeen`, {}, { withCredentials: true });
         // Optionally update your local state here to reflect that notifications are seen
       } catch (error) {
         console.error('Failed to mark notifications as seen', error);
@@ -38,7 +38,7 @@ const Notifications = ({user , socket , setTrigger, darkMode}) => {
   const getNotifications = async() => {
     try {
       setLoading(true)
-      const response = await axios.get('http://localhost:8000/notifications/getAll', {withCredentials: true})
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/getAll`, {withCredentials: true})
       if (response) {
         setNotifications(response.data.notifications || [])
       }
@@ -56,7 +56,7 @@ const Notifications = ({user , socket , setTrigger, darkMode}) => {
         !(notif.type === 'friend_request' && notif.fromUser._id === requesterId)
       ))
       setTrigger(prev=>prev+1)
-      const response = await axios.post(`http://localhost:8000/respondRequest/${requesterId}`, {action}, {withCredentials: true})
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/respondRequest/${requesterId}`, {action}, {withCredentials: true})
       if (response) {
       }
     } catch (err) {

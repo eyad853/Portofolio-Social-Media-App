@@ -60,7 +60,7 @@ const Chats = ({user,socket,darkMode}) => {
         
             setMessages((prev) => [...prev, tempMessage]);
             setMessage('');
-            const response = await axios.post(`http://localhost:8000/messages/${recieverId}` , {message} , {withCredentials:true})
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/messages/${recieverId}` , {message} , {withCredentials:true})
         }catch(err){
             console.log(err);
         }
@@ -69,7 +69,7 @@ const Chats = ({user,socket,darkMode}) => {
     const getMessages = async(friendId)=>{
         try{
             setLoading(true)
-            const response = await axios.get(`http://localhost:8000/messages/${friendId}`, {withCredentials:true})
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/${friendId}`, {withCredentials:true})
             setMessages(response.data.messages)
         }catch(err){
             console.log(err);

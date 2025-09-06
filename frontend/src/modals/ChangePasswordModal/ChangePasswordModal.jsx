@@ -34,7 +34,7 @@ const ChangePasswordModal = ({ isOpen, setIsOpen, setUser, darkMode, showMessage
             }
             body.newPassword = newPassword;
 
-            const response = await axios.patch('http://localhost:8000/settings/updateUserInfo', body, { withCredentials: true });
+            const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/settings/updateUserInfo`, body, { withCredentials: true });
             showMessage(response.data.message || 'Password updated successfully!');
             setIsOpen(false);
             setOldPassword("");

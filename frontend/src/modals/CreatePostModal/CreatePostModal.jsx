@@ -112,7 +112,7 @@ const CreatePostModal = ({darkMode,user, isOpen, setIsOpen, isImageOrVideo, setI
             }
             
             const response = await axios.post(
-                'http://localhost:8000/post/create', 
+                `${import.meta.env.VITE_BACKEND_URL}/post/create`, 
                 formData,
                 {
                     headers: {

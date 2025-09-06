@@ -16,7 +16,7 @@ const ChangeEmailModal = ({ isOpen, setIsOpen, setUser, darkMode, showMessage })
             setUser(prev => ({ ...prev, email: email })); // Instant UI update
             setIsOpen(false);
             setEmail('');
-            const response = await axios.patch('http://localhost:8000/settings/updateUserInfo', { email: email }, { withCredentials: true });
+            const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/settings/updateUserInfo`, { email: email }, { withCredentials: true });
             showMessage(response.data.message || 'Email updated successfully!');
         } catch (err) {
             console.error('Error updating email:', err);

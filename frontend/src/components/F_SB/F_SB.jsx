@@ -12,7 +12,7 @@ const F_SB = ({socket , user , darkMode}) => {
     const getRequests = async()=>{
         try{
             setLoading(true)
-            const response = await axios.get('http://localhost:8000/getAllRequests')
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getAllRequests`)
             setRequests(response.data.requests)
             setLoading(false)
         }catch(err){
@@ -23,7 +23,7 @@ const F_SB = ({socket , user , darkMode}) => {
     const fetchFriends = async()=>{
         try{
             setLoading(true)
-            const response = await axios.get('http://localhost:8000/allUsers' , {withCredentials:true})
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/allUsers` , {withCredentials:true})
             setUsers(response.data.allUsers)
             setLoading(false)
         }catch(err){
@@ -63,7 +63,7 @@ const F_SB = ({socket , user , darkMode}) => {
     
         // Then send request to server
         try {
-          await axios.post(`http://localhost:8000/sendRequest/${recipientId}`, {}, {
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/sendRequest/${recipientId}`, {}, {
             withCredentials: true,
           });
         } catch (err) {

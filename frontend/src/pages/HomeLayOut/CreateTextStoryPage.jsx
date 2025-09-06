@@ -22,7 +22,7 @@ const CreateTextStoryPage = ({ darkMode }) => {
     try {
       navigate('/home')
       setTextStory('')
-      const res = await axios.post('http://localhost:8000/story/create', {caption:textStory}, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/story/create`, {caption:textStory}, {
         withCredentials: true, // for cookies/session
         headers: {
           'Content-Type': 'multipart/form-data',

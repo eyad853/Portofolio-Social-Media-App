@@ -47,7 +47,7 @@ const Home = ({user,stories,setStories , posts ,setPosts, socket,darkMode , setD
         }));
     };
 
-    const API_URL = 'http://localhost:8000';
+    const API_URL = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
         socket.on('newPost' , (data)=>{
@@ -508,7 +508,7 @@ const handleFollowToggle = async (userId) => {
                                                         <div className="w-full relative">
                                                             <div className={`w-full ${isExpanded ? '' : 'max-h-60 sm:max-h-80'} overflow-hidden`}>
                                                                 <img
-                                                                    src={`http://localhost:8000${mediaItem.url}`}
+                                                                    src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
                                                                     alt=""
                                                                     className="w-full object-cover"
                                                                 />
@@ -526,7 +526,7 @@ const handleFollowToggle = async (userId) => {
                                                         <div className="w-full relative">
                                                             <div className={`w-full ${isExpanded ? '' : 'max-h-60 sm:max-h-80'} overflow-hidden`}>
                                                                 <video
-                                                                    src={`http://localhost:8000${mediaItem.url}`}
+                                                                    src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
                                                                     controls
                                                                     className="w-full object-cover"
                                                                 />
