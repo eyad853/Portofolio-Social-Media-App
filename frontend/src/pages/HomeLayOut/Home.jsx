@@ -182,7 +182,7 @@ try {
 
     // Update each post in the frontend
     setPosts((prevPosts) =>
-        prevPosts.map((post) => ({
+        prevPosts?.map((post) => ({
         ...post,
         likes: likesByPost[post._id] || [], // add a `.likes` field
       }))
@@ -263,7 +263,7 @@ try {
 
     // Update posts with their comments
     setPosts((prevPosts) =>
-        prevPosts.map((post) => ({
+        prevPosts?.map((post) => ({
         ...post,
         comments: commentsByPost[post._id] || [], // add `.comments` field to each post
         }))
@@ -423,7 +423,7 @@ const handleFollowToggle = async (userId) => {
             <CreatePostPart user={user} darkMode={darkMode}/>
 
             {/* posts part */}
-            {posts.length > 0 ?(
+            {posts?.length > 0 ?(
                 posts.map(post=>(
                     <div 
                     key={post._id}
@@ -452,7 +452,7 @@ const handleFollowToggle = async (userId) => {
                                     : 'text-blue-500'
                                     }`}
                                 >
-                                    {userFollowing.includes(post?.user?._id) ? 'Following' : 'Follow'}
+                                    {userFollowing?.includes(post?.user?._id) ? 'Following' : 'Follow'}
                                 </div>)}
                             </div>
 
@@ -471,7 +471,7 @@ const handleFollowToggle = async (userId) => {
                             <div className='w-full flex-1 flex flex-col'>
                                 <div className='px-3 py-2'>
                                     {/* Text content with read more functionality */}
-                                    {post.content.length > 150 && !expandedPosts[post._id] ? (
+                                    {post?.content?.length > 150 && !expandedPosts[post._id] ? (
                                         <div>
                                             <p className='mb-1 text-sm sm:text-base'>{post.content.substring(0, 250)}...</p>
                                             <button 
@@ -684,13 +684,13 @@ const handleFollowToggle = async (userId) => {
 
         </main>
         <LikesModal 
-        post={posts.find((p) => p._id === selectedPostId)}
+        post={posts?.find((p) => p._id === selectedPostId)}
         isLikesModalOpen={isLikesModalOpen} 
         setIsLikesModalOpen={setIsLikesModalOpen}/>
 
         <CommensModal 
         content={content}
-        post={posts.find((p) => p._id === selectedPostId)}
+        post={posts?.find((p) => p._id === selectedPostId)}
         setContent={setContent} 
         addComment={addComment} 
         isCommentsModalOpen={isCommentsModalOpen} 
@@ -699,7 +699,7 @@ const handleFollowToggle = async (userId) => {
         />
 
         <ShareModal 
-        post={posts.find((p) => p._id === selectedPostId)}
+        post={posts?.find((p) => p._id === selectedPostId)}
         isShareModalOpen={isShareModalOpen}
         setIsShareModalOpen={setIsShareModalOpen}
         darkMode={darkMode}

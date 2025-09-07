@@ -40,31 +40,27 @@ const StoryPart = ({ stories, setStories, user, darkMode,setShowSM }) => {
 
   // Function to check if a user has stories (within last 24 hours)
   const userHasStories = (userId) => {
-    console.log('Checking stories for userId:', userId);
-    console.log('All stories:', stories);
     
-    const userStories = stories.filter(story => {
+    const userStories = stories?.filter(story => {
       // Handle both cases: story.user as string/ObjectId or populated object
-      const storyUserId = typeof story.user === 'object' ? story.user._id : story.user;
-      console.log('Comparing story user:', storyUserId, 'with userId:', userId);
+      const storyUserId = typeof story.user === 'object' ? story?.user._id : story?.user;
       return storyUserId === userId || storyUserId?.toString() === userId?.toString();
     });
     
-    console.log('User stories found:', userStories);
     
-    if (userStories.length === 0) return false;
+    
+    if (userStories?.length === 0) return false;
     
     // Check if any story is within the last 24 hours
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const hasRecentStories = userStories.some(story => new Date(story.createdAt) > twentyFourHoursAgo);
+    const hasRecentStories = userStories?.some(story => new Date(story.createdAt) > twentyFourHoursAgo);
     
-    console.log('Has recent stories:', hasRecentStories);
     return hasRecentStories;
   };
 
   // Function to check if current user has stories
   const currentUserHasStories = () => {
-    return userHasStories(user._id);
+    return userHasStories(user?._id);
   };
 
   const handleClick = () => {
@@ -110,8 +106,7 @@ const StoryPart = ({ stories, setStories, user, darkMode,setShowSM }) => {
       <div className="flex gap-2.5">
         {user?.friends?.map((friend) => {
           const friendHasStories = userHasStories(friend._id);
-          console.log(`Friend ${friend.username} (${friend._id}) has stories:`, friendHasStories);
-          console.log('Friend stories:', stories.filter(story => story.user === friend._id));
+          
           
           return (
             <div key={friend._id} className='flex flex-col gap-1'>

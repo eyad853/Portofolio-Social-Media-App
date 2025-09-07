@@ -43,7 +43,7 @@ const App = () => {
     const loadStories = async () => {
       setLoadingStories(true);
       try {
-        const response = await axios.get(`${window.location.origin}/stories/getAll`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/stories/getAll`, {
           withCredentials:true
         });
         const data = response.data
@@ -90,7 +90,7 @@ const App = () => {
 
 const fetchUser = async()=>{
   setLoadingUser(true)
-  await axios.get(`${window.location.origin}/api/user`, { withCredentials: true })
+  await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user`, { withCredentials: true })
       .then(response => {
           if (!response.data.error) {
               setUser(response.data.user);
@@ -106,7 +106,7 @@ const fetchUser = async()=>{
 const fetchAllPosts = async()=>{
   try{
     setLoadingPosts(true)
-    const response = await axios.get(`${window.location.origin}/post/getAll`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/post/getAll`)
     setPosts(response.data.posts)
   }catch(err){
     console.log(err);

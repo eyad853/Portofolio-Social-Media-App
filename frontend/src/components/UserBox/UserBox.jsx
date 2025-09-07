@@ -2,7 +2,7 @@ import React from 'react'
 import { FaUser } from 'react-icons/fa'
 
 const UserBox = ({user , darkMode,userFollowing,userFollowers,posts}) => {
-    const postCount = posts.filter(p=>p?.user?._id===user?._id)
+    const postCount = posts?.filter(p=>p?.user?._id===user?._id)
   return (
     <div className={`w-full h-32 sm:h-36 md:h-40 ${darkMode?"bg-neutral-700 text-white":"bg-white"} rounded-2xl p-2 sm:p-3`}>
         <div className={`w-full h-full rounded-2xl ${darkMode?"bg-neutral-800 text-white":"bg-gray-100"} flex flex-col p-2 sm:p-3`}>
