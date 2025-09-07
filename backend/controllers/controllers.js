@@ -44,7 +44,7 @@ export const normalSignUp = async (req, res) => {
         });
 
         // Construct full avatar URL if avatar exists
-        if (avatar) newUser.avatar = `http://localhost:8000/uploads/profile/avatars/${avatar}`;
+        if (avatar) newUser.avatar = `${process.env.backendURL}/uploads/profile/avatars/${avatar}`;
 
         await newUser.save();
 
@@ -1041,8 +1041,8 @@ export const sendMessageToFriend = async (req, res) => {
     if (bio !== undefined) user.bio = bio;
     if (socialLinks !== undefined) user.socialLinks = socialLinks // assuming it's sent as a JSON string
     
-    if (avatar) user.avatar = `http://localhost:8000/uploads/profile/avatars/${avatar}`;
-    if (coverPhoto) user.coverPhoto = `http://localhost:8000/uploads/profile/coverPhotos/${coverPhoto}`;
+    if (avatar) user.avatar = `${process.env.backendURL}/uploads/profile/avatars/${avatar}`;
+    if (coverPhoto) user.coverPhoto = `${process.env.backendURL}/uploads/profile/coverPhotos/${coverPhoto}`;
 
     await user.save();
 
@@ -1086,12 +1086,12 @@ export const updateUserInfo = async (req, res) => {
     // Changed 'profileImage' to 'avatar' to match your multer configuration
     if (req.files && req.files.avatar && req.files.avatar[0]) {
       const newAvatarFilename = req.files.avatar[0].filename;
-      const newAvatarPath = `http://localhost:8000/uploads/profile/avatars/${newAvatarFilename}`;
+      const newAvatarPath = `${process.env.backendURL}/uploads/profile/avatars/${newAvatarFilename}`;
 
       // Delete old avatar if it exists and is a local path (not a social media avatar URL)
       // You need to adjust the path.join based on your actual file structure
       // Example: if your uploads are in a 'uploads' directory one level up from your controllers
-      if (user.avatar && user.avatar.startsWith('http://localhost:8000/uploads/profile/avatars/')) {
+      if (user.avatar && user.avatar.startsWith(`${process.env.backendURL}/uploads/profile/avatars/`)) {
         const oldAvatarFilename = user.avatar.split('/').pop();
         // Construct the absolute path to the old avatar file
         const oldAvatarFilePath = path.join(__dirname, '..', '..', 'uploads', 'profile', 'avatars', oldAvatarFilename);
@@ -1204,7 +1204,7 @@ export const createStory = async (req, res) => {
 
     // If a file was uploaded
     if (file) {
-      mediaUrl = `http://localhost:8000/uploads/profile/stories/${file.filename}`;
+      mediaUrl = `${process.env.backendURL}/uploads/profile/stories/${file.filename}`;
 
       mediaType = file.mimetype.startsWith('image/')
         ? 'image'
