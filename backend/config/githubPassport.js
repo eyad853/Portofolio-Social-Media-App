@@ -1,9 +1,9 @@
+import dotenv from "dotenv"
+dotenv.config()
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import User from '../schemas/UserSchema.js';
-import dotenv from "dotenv"
 import settingsModel from '../schemas/Settings.js';
-dotenv.config()
 
 passport.use( new GitHubStrategy(
     {
