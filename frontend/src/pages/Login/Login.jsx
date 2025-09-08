@@ -133,7 +133,7 @@ const Login = () => {
                             </button>
                             <div className='w-full flex items-center justify-center mt-5 text-black hover:text-blue-600 transition-all duration-200'>
                                 <p className=''>
-                                    <Link to="/signup">Don't have an account? Sign Up</Link> {/* Changed link text */}
+                                    <Link to="/">Don't have an account? Sign Up</Link> {/* Changed link text */}
                                 </p>
                             </div>
                         </div>
