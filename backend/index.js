@@ -20,6 +20,7 @@ import friendsModel from "./schemas/Friends.js"
 
 console.log('data in index.js')
 console.log("frontendURL =", process.env.frontendURL);
+console.log("frontendURL =", process.env.backendURL);
 console.log("DB =", process.env.DB);
 console.log("SESSION_SECRET =", process.env.SESSION_SECRET);
 console.log("googleClientID =", process.env.googleClientID);

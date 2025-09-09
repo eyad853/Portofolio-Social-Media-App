@@ -25,6 +25,7 @@ export const normalSignUp = async (req, res) => {
 
     try {
         const isAccountExisted = await User.findOne({ email });
+        
         if (isAccountExisted) {
             return res.status(400).json({
                 error: true,
@@ -62,6 +63,7 @@ export const normalSignUp = async (req, res) => {
             }
             console.log("User logged in after signup (server-side):", req.user?._id || 'User object not available');
             // Redirect after successful login to ensure session cookie is properly set by browser
+            // console.log(process.env)
             res.redirect(`${process.env.frontendURL}/home`); // Redirect to home page
         });
     } catch (error) {
@@ -77,7 +79,6 @@ export const normalLogin = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
-
         if (!user) {
             return res.status(400).json({
                 error: true,
@@ -1312,7 +1313,7 @@ export const getNotifications = async (req, res) => {
 
 export const markNotificationsAsSeen = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req?.user?.id;
 
     await notificationModel.updateMany(
       { user: userId, seen: false },
@@ -1328,7 +1329,7 @@ export const markNotificationsAsSeen = async (req, res) => {
 
 export const getFeedStories = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req?.user?.id)
 
     // Combine current user's ID + friend IDs
     const userIds = [req.user.id, ...user.friends];
