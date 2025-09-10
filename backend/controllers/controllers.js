@@ -63,7 +63,7 @@ export const normalSignUp = async (req, res) => {
             }
             console.log("User logged in after signup (server-side):", req.user?._id || 'User object not available');
             // Redirect after successful login to ensure session cookie is properly set by browser
-            // console.log(process.env)
+            console.log(process.env.frontendURL)
             res.redirect(`${process.env.frontendURL}/home`); // Redirect to home page
         });
     } catch (error) {
