@@ -27,7 +27,7 @@ export const normalSignUp = async (req, res) => {
         const isAccountExisted = await User.findOne({ email });
         
         if (isAccountExisted) {
-            res.redirect(`${process.env.frontendURL}/login`)
+            return res.redirect(`${process.env.frontendURL}/login`)
         }
 
         // Hash the password before saving
