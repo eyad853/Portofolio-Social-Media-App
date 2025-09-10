@@ -27,10 +27,7 @@ export const normalSignUp = async (req, res) => {
         const isAccountExisted = await User.findOne({ email });
         
         if (isAccountExisted) {
-            return res.status(400).json({
-                error: true,
-                message: "Account already exists"
-            });
+            res.redirect(`${process.env.frontendURL}/login`)
         }
 
         // Hash the password before saving
