@@ -43,6 +43,8 @@ const Login = () => {
             if (response.status === 200) {
                 console.log("Login successful:", response.data.message);
                 navigate('/home');
+            }else if (response.status===400 ||401 ||500){
+                navigate('/')
             }
         } catch (error) {
             console.error("Login failed:", error);
