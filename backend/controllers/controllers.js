@@ -345,7 +345,7 @@ const storage = multer.diskStorage({
 export const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user._id;
+    const userId = req?.user?._id;
 
     const post = await postModel.findById(postId);
     if (!post) {
@@ -388,7 +388,7 @@ export const likePost = async (req, res) => {
   export const unlikePost = async (req, res) => {
     try {
       const { postId } = req.params;
-      const userId = req.user._id; // Assuming you have authentication middleware
+      const userId = req?.user?._id; // Assuming you have authentication middleware
   
       // Find and remove the like
       const like = await likeModel.findOneAndDelete({ user: userId, post: postId });
@@ -440,7 +440,7 @@ export const addComment = async (req, res) => {
   try {
     const { postId } = req.params;
     const { content } = req.body;
-    const userId = req.user._id;
+    const userId = req?.user?._id;
 
     if (!content || content.trim() === '') {
       return res.status(400).json({ error: true, message: 'Comment content is required' });
@@ -488,7 +488,7 @@ export const addComment = async (req, res) => {
   export const deleteComment = async (req, res) => {
     try {
         const { commentId } = req.params;
-        const userId = req.user._id;
+        const userId = req?.user?._id;
 
         const comment = await commentsModel.findById(commentId);
 
@@ -610,7 +610,7 @@ export const getSinglePostComments = async (req, res) => {
   export const followUser = async (req, res) => {
     try {
       const { userId } = req.params;
-      const followerId = req.user._id; // Assuming you have authentication middleware
+      const followerId = req?.user?._id; // Assuming you have authentication middleware
   
       // Check if user exists
       const userToFollow = await User.findById(userId);
@@ -668,7 +668,7 @@ export const getSinglePostComments = async (req, res) => {
   export const unfollowUser = async (req, res) => {
     try {
       const { userId } = req.params;
-      const followerId = req.user._id; // Assuming you have authentication middleware
+      const followerId = req?.user?._id; // Assuming you have authentication middleware
   
       // Find and remove the follow relationship
       const follow = await followingModel.findOneAndDelete({ 
