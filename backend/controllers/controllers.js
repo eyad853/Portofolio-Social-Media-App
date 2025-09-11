@@ -1326,7 +1326,7 @@ export const getFeedStories = async (req, res) => {
     const user = await User.findById(req?.user?.id)
 
     // Combine current user's ID + friend IDs
-    const userIds = [req.user.id, ...user.friends];
+    const userIds = [req?.user?.id, ...user?.friends];
 
     const stories = await Story.find({ user: { $in: userIds } })
       .sort({ createdAt: -1 });
