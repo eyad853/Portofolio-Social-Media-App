@@ -77,10 +77,7 @@ export const normalLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({
-                error: true,
-                message: "Account does not exist"
-            });
+            return res.redirect(`${process.env.frontendURL}/`)
         }
 
         if (!user.password) {
