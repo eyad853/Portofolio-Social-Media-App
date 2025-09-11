@@ -703,7 +703,7 @@ export const getSinglePostComments = async (req, res) => {
   
   export const getUserFollowers = async (req, res) => {
     try {
-      const userId  = req.user.id;
+      const userId  = req?.user?.id;
       
       // Check if user exists
       const user = await User.findById(userId);
@@ -735,7 +735,7 @@ export const getSinglePostComments = async (req, res) => {
   
   export const getUserFollowing = async (req, res) => {
     try {
-      const userId  = req.user.id;
+      const userId  = req?.user?.id;
       
       // Check if user exists
       const user = await User.findById(userId);
@@ -771,8 +771,7 @@ export const getSinglePostComments = async (req, res) => {
   // friends
   export const getAllUsers = async (req, res) => {
     try {
-        // Assuming the requesting user's ID is passed in the request (e.g., via req.user.id)
-        const userId = req.user.id;
+        const userId = req?.user?.id;
 
         // Fetch all users except the one with the requestingUserId
         const allUsers = await User.find({ _id: { $ne: userId } });
@@ -798,7 +797,7 @@ export const getAllRequests = async( req , res)=>{
 
 // Send friend request
 export const sendOrCancelRequest = async (req, res) => {
-  const requesterId = req.user.id;
+  const requesterId = req?.user?.id;
   const recipientId = req.params.recipientId;
 
   if (requesterId === recipientId) {
@@ -856,9 +855,9 @@ export const sendOrCancelRequest = async (req, res) => {
 
 // Respond to friend request (accept/reject)
 export const respondRequest = async (req, res) => {
-  const recipientId = req.user.id;
-  const requesterId = req.params.requesterId;
-  const { action } = req.body; // 'accept' or 'reject'
+  const recipientId = req?.user?.id;
+  const requesterId = req?.params?.requesterId;
+  const { action } = req?.body; // 'accept' or 'reject'
 
   if (!['accept', 'reject'].includes(action)) {
     return res.status(400).send('Invalid action');
@@ -918,8 +917,8 @@ export const respondRequest = async (req, res) => {
 
 // Remove a friend
 export const removeFriend = async (req, res) => {
-  const userId = req.user.id;
-  const friendId = req.params.friendId;
+  const userId = req?.user?.id;
+  const friendId = req?.params?.friendId;
 
   const friendship = await friendsModel.findOneAndDelete({
     status: 'accepted',
@@ -940,8 +939,8 @@ export const removeFriend = async (req, res) => {
 
 // GET /messages/:friendId
 export const getMessagesWithFriend = async (req, res) => {
-  const userId = req.user.id;
-  const friendId = req.params.friendId;
+  const userId = req?.user?.id;
+  const friendId = req?.params?.friendId;
 
   try {
     const messages = await messagesModel.find({
@@ -962,9 +961,9 @@ export const getMessagesWithFriend = async (req, res) => {
 
 // POST /messages/:friendId
 export const sendMessageToFriend = async (req, res) => {
-  const senderId = req.user.id;
-  const receiverId = req.params.friendId;
-  const { message } = req.body;
+  const senderId = req?.user?.id;
+  const receiverId = req?.params?.friendId;
+  const { message } = req?.body;
 
   if (!message) return res.status(400).send('Message content required');
 
@@ -1018,7 +1017,7 @@ export const sendMessageToFriend = async (req, res) => {
   }
 
   export const updateUserProfile = async (req, res) => {
-  const id = req.user.id
+  const id = req?.user?.id
   const { bio, socialLinks } = req.body;
 
   const avatar = req.files?.avatar?.[0]?.filename || null;
@@ -1056,8 +1055,7 @@ export const sendMessageToFriend = async (req, res) => {
 
 export const updateUserInfo = async (req, res) => {
   try {
-    // Ensure req.user.id is available from your authentication middleware
-    const userId = req.user.id;
+    const userId = req?.user?.id;
     // Use 'username' to match frontend, and ensure 'currentPassword' and 'newPassword' are destructured
     const { name, email, currentPassword, newPassword } = req.body;
 
@@ -1134,7 +1132,7 @@ export const updateUserInfo = async (req, res) => {
 
 export const deleteAccount = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req?.user?.id;
 
     await User.findByIdAndDelete(userId);
 
@@ -1169,7 +1167,7 @@ export const logout = (req, res) => {
 
 export const updateDarkMode = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req?.user?.id;
     const { darkMode } = req.body;
 
     if (typeof darkMode !== "boolean") {
@@ -1217,7 +1215,7 @@ export const createStory = async (req, res) => {
     const { caption } = req.body;
 
     const story = await Story.create({
-      user: req.user.id,
+      user: req?.user?.id,
       mediaUrl,
       mediaType,
       caption
@@ -1225,7 +1223,7 @@ export const createStory = async (req, res) => {
 
     const io = req.app.get('io');
     io.emit('new-story', {
-      user: req.user.id,
+      user: req?.user?.id,
       story
     });
 
@@ -1247,7 +1245,7 @@ export const deleteStory = async (req, res) => {
       return res.status(404).json({ message: 'Story not found' });
     }
 
-    if (story.user.toString() !== req.user.id) {
+    if (story.user.toString() !== req?.user?.id) {
       return res.status(403).json({ message: 'Not authorized to delete this story' });
     }
 
@@ -1266,7 +1264,7 @@ export const deleteStory = async (req, res) => {
 
     const io = req.app.get('io');
     io.emit('delete-story', {
-      user: req.user.id,
+      user: req?.user?.id,
       storyId: req.params.id
     });
 
@@ -1281,7 +1279,7 @@ export const deleteStory = async (req, res) => {
 
 export const getNotifications = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req?.user?.id;
 
     const notifications = await notificationModel
       .find({ user: userId })
