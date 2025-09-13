@@ -39,33 +39,7 @@ const App = () => {
 
   const [stories, setStories] = useState([]);
 
-  useEffect(() => {
-    const loadStories = async () => {
-      setLoadingStories(true);
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/stories/getAll`, {
-          withCredentials:true
-        });
-        const data = response.data
-        console.log(data);
-              
-        if (data.error) {
-          console.error('Error fetching stories:', data.message);
-          alert('Failed to load stories');
-          return;
-        }
-        
-        setStories(data.stories);
-      } catch (error) {
-        console.error('Error fetching stories:', error);
-        
-      } finally {
-        setLoadingStories(false);
-      }
-    };
-    
-    loadStories();
-  }, []);
+ 
 
     useEffect(() => {
     socket.on('connect', () => {
@@ -118,6 +92,34 @@ const fetchAllPosts = async()=>{
     fetchUser()
     fetchAllPosts()
   },[trigger])
+
+   useEffect(() => {
+    const loadStories = async () => {
+      setLoadingStories(true);
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/stories/getAll`, {
+          withCredentials:true
+        });
+        const data = response.data
+        console.log(data);
+              
+        if (data.error) {
+          console.error('Error fetching stories:', data.message);
+          alert('Failed to load stories');
+          return;
+        }
+        
+        setStories(data.stories);
+      } catch (error) {
+        console.error('Error fetching stories:', error);
+        
+      } finally {
+        setLoadingStories(false);
+      }
+    };
+    
+    loadStories();
+  }, []);
 
   return (
     <Router>
