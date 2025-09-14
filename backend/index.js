@@ -64,15 +64,20 @@ const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
 
 const sessionMiddleware = session({
-secret:process.env.SESSION_SECRET,
-saveUninitialized:false,
-resave:false,
-store:MongoStore.create({
-mongoUrl:process.env.DB,
-collectionName: 'sessions',  // Collection where sessions are stored
-ttl: 14 * 24 * 60 * 60, // Session TTL in seconds (14 days)
-})
-})
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.DB,
+    collectionName: "sessions",
+    ttl: 14 * 24 * 60 * 60
+  }),
+  cookie: {
+    httpOnly: true,
+    secure: true,   // use true if your backend is running on HTTPS
+    sameSite: "none"
+  }
+});
 
 app.use(sessionMiddleware)
 
