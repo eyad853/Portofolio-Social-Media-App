@@ -25,7 +25,7 @@ const SelectionSideBar = ({user , darkMode}) => {
         <div 
         onClick={()=>{
             setSelectedPage('profile')
-            navigate(`/home/profile/${user._id}`)
+            navigate(`/home/profile/${user?._id}`)
         }}
         className={`w-auto lg:w-full flex-shrink-0 ${selectedPage==="profile"?"bg-blue-500 text-white":darkMode?"bg-neutral-700 hover:bg-neutral-800":"bg-white hover:bg-blue-50"} rounded-xl pl-2 transition-all duration-300 h-12 sm:h-16 lg:h-16 flex gap-2 sm:gap-3 cursor-pointer items-center font-semibold text-sm sm:text-base px-3 lg:px-2`}>
             <div className="text-lg sm:text-xl">
