@@ -775,7 +775,7 @@ export const getAllRequests = async( req , res)=>{
   try{
     const requests = await friendsModel.find()
 
-    return res.status(err).json({
+    return res.status(200).json({
       error:false,
       requests
     })
