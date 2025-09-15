@@ -54,7 +54,7 @@ const SelectionSideBar = ({user , darkMode,notificationsCount}) => {
             navigate('/home/notification')
         }}
         className={`w-auto lg:w-full flex-shrink-0 ${selectedPage==="notifications"?"bg-blue-500 text-white":darkMode?"bg-neutral-700 hover:bg-neutral-800":"bg-white hover:bg-blue-50"} rounded-xl pl-2 transition-all duration-300 h-12 sm:h-16 lg:h-16 flex gap-2 sm:gap-3 cursor-pointer items-center font-semibold text-sm sm:text-base px-3 lg:px-2`}>
-            <div className="text-lg sm:text-xl">
+            <div className="text-lg bg-amber-300 relative sm:text-xl">
                 < IoIosNotifications />
             </div>
             <div className="whitespace-nowrap">
