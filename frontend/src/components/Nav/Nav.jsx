@@ -13,11 +13,6 @@ const Nav = ({user,darkMode}) => {
        
       {/* account and notifications */}
       <div className='w-auto sm:w-[15%] h-10 mr-2 sm:mr-20 flex justify-between gap-2 sm:gap-3'>
-        {/* notifications */}
-        <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-full text-lg sm:text-xl text-black bg-neutral-200 cursor-pointer flex justify-center items-center'>
-          <PiBellSimpleRingingLight />
-        </div>
-         
         {/* profile */}
         <div className='h-full flex-1 flex items-center justify-start overflow-hidden gap-2 sm:gap-3 cursor-pointer'>
           <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-neutral-200'>
