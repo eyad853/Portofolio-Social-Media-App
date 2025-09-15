@@ -63,6 +63,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
 
+app.set('trust proxy', 1); // important when behind HTTPS reverse proxy
+
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
