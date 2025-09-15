@@ -147,12 +147,6 @@ mongoose.connection.on('error', () => {
 
 app.use(express.json({ limit: '10mb' }));
 
-app.use((req, res, next) => {
-  console.log("req.secure =", req.secure);
-  console.log("X-Forwarded-Proto =", req.headers["x-forwarded-proto"]);
-  next();
-});
-
 app.use(router)
 
 
