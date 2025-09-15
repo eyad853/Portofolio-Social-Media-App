@@ -65,6 +65,12 @@ app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
 
 app.set('trust proxy', 1); // important when behind HTTPS reverse proxy
 
+app.use((req, res, next) => {
+  console.log("req.secure =", req.secure);
+  console.log("X-Forwarded-Proto =", req.headers["x-forwarded-proto"]);
+  next();
+});
+
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
