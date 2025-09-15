@@ -4,7 +4,7 @@ import { IoIosNotifications, IoIosSettings } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from 'react-router-dom';
  
-const SelectionSideBar = ({user , darkMode}) => {
+const SelectionSideBar = ({user , darkMode,notificationsCount}) => {
     const [selectedPage , setSelectedPage]=useState('feed')
     const navigate = useNavigate()
   return (

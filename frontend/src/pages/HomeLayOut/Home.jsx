@@ -29,6 +29,8 @@ const Home = ({user,stories,setStories , posts ,setPosts, socket,darkMode , setD
     const [selectedPostId, setSelectedPostId] = useState(null)
 
     const [showSM,setShowSM]=useState(false)
+
+    const [notificationsCount , setNotificationsCount]=useState(0)
     
     // Toggle expanded state for a specific post
     const toggleExpandPost = (postId) => {
@@ -193,11 +195,27 @@ try {
   }
 };
 
+const getNotificationsCount = async() => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/getAll`, {withCredentials: true})
+      if (response) {
+        const unseenNotifications = response.data.notifications.map(n=>{
+            return !n.seen
+        })
+        setNotificationsCount(unseenNotifications)
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+    }
+  }
+
 useEffect(()=>{
     getPostsLikes()
     getPostComments()
     getUserFollowers()
     getUserFollowing()
+    getNotificationsCount()
 },[])
 
 // Comments Services
@@ -344,6 +362,8 @@ const handleFollowToggle = async (userId) => {
   }
 };
 
+
+
   return (
     <>
     {loading?(
@@ -368,7 +388,7 @@ const handleFollowToggle = async (userId) => {
           />
         </div>
         <div className="mb-4">
-          <SelectionSideBar user={user} darkMode={darkMode}/>
+          <SelectionSideBar notificationsCount={notificationsCount} user={user} darkMode={darkMode}/>
         </div>
         
         {/* Friends/Messages Section for Mobile/Tablet */}
