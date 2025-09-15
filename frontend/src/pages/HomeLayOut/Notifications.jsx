@@ -3,7 +3,7 @@ import Nav from '../../components/Nav/Nav'
 import axios from 'axios'
 import { FaUser, FaHeart, FaComment, FaUserPlus, FaUserCheck, FaUserTimes, FaNewspaper } from 'react-icons/fa'
 
-const Notifications = ({user , socket , setTrigger, darkMode}) => {
+const Notifications = ({user , socket , setTrigger, darkMode,fetchUser}) => {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -163,6 +163,7 @@ const Notifications = ({user , socket , setTrigger, darkMode}) => {
                   onClick={(e) => {
                     e.stopPropagation()
                     respondRequest(notification.fromUser._id, 'accept')
+                    fetchUser()
                   }}
                   className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-blue-500 text-white text-xs sm:text-sm rounded-md hover:bg-blue-600 transition-colors"
                 >

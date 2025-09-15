@@ -179,6 +179,7 @@ const fetchAllPosts = async()=>{
           user={user} 
           darkMode={darkMode}
           setTrigger={setTrigger}
+          fetchUser={fetchUser}
           />
         }
           />

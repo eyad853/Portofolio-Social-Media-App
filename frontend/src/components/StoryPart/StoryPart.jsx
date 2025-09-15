@@ -83,7 +83,7 @@ const StoryPart = ({ stories, setStories, user, darkMode,setShowSM }) => {
             className='w-16 cursor-pointer overflow-hidden h-16 rounded-full bg-neutral-300'
           >
             {user && user?.avatar ? (
-              <img src={user.avatar} className='w-full h-full rounded-full object-cover' alt="Your avatar" />
+              <img src={user.avatar} className='w-full h-full rounded-full object-cover' />
             ) : (
               <div className='w-full text-5xl h-full flex overflow-hidden justify-center items-center mt-1 rounded-full bg-gray-200'>
                 <FaUser className='rounded-b-2xl mt-2.5 text-gray-500' />
