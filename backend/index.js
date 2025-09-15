@@ -145,8 +145,6 @@ mongoose.connection.on('error', () => {
   }
 });
 
-console.log("Connected DB:", mongoose.connection.name);
-
 app.use(express.json({ limit: '10mb' }));
 
 app.use((req, res, next) => {
