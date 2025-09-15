@@ -65,12 +65,6 @@ app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
 
 app.set('trust proxy', 1); // important when behind HTTPS reverse proxy
 
-app.use((req, res, next) => {
-  console.log("req.secure =", req.secure);
-  console.log("X-Forwarded-Proto =", req.headers["x-forwarded-proto"]);
-  next();
-});
-
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
@@ -166,6 +160,12 @@ mongoose.connection.on('error', () => {
 console.log("Connected DB:", mongoose.connection.name);
 
 app.use(express.json({ limit: '10mb' }));
+
+app.use((req, res, next) => {
+  console.log("req.secure =", req.secure);
+  console.log("X-Forwarded-Proto =", req.headers["x-forwarded-proto"]);
+  next();
+});
 
 app.use(router)
 
