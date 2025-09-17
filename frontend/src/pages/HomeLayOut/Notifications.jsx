@@ -11,7 +11,7 @@ const Notifications = ({user , socket , setTrigger, darkMode,fetchUser}) => {
     // Mark notifications as seen on page load
     const markAsSeen = async () => {
       try {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/notifications/markAsSeen`, {}, { withCredentials: true });
+        await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/notifications/markAsSeen`, {}, { withCredentials: true });
         // Optionally update your local state here to reflect that notifications are seen
       } catch (error) {
         console.error('Failed to mark notifications as seen', error);
@@ -52,13 +52,13 @@ const Notifications = ({user , socket , setTrigger, darkMode,fetchUser}) => {
   const respondRequest = async(requesterId, action) => {
     try {
       // Remove the notification after responding
-      setNotifications(prev => prev.filter(notif => 
-        !(notif.type === 'friend_request' && notif.fromUser._id === requesterId)
-      ))
+      setNotifications(prev => prev.map(notif => 
+        (notif.type === 'friend_request' && notif.fromUser._id === requesterId)
+          ? { ...notif, type: action === 'accept' ? 'friend_accepted' : 'friend_rejected' }
+          : notif
+        ))
       setTrigger(prev=>prev+1)
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/respondRequest/${requesterId}`, {action}, {withCredentials: true})
-      if (response) {
-      }
     } catch (err) {
       console.log(err)
     }
@@ -84,15 +84,16 @@ const Notifications = ({user , socket , setTrigger, darkMode,fetchUser}) => {
   }
 
   const getNotificationText = (notification) => {
-    const fromUserName = notification.fromUser?.username || 'Someone'
+    const fromUserName = notification?.fromUser?.username || 'Someone'
+    const UserName = notification?.user?.username || 'Someone'
     
     switch(notification.type) {
       case 'friend_request':
         return `${fromUserName} sent you a friend request`
       case 'friend_accepted':
-        return `${fromUserName} accepted your friend request`
+        return  `${UserName} accepted the friend request`
       case 'friend_rejected':
-        return `${fromUserName} rejected your friend request`
+        return `${UserName} rejected your friend request`
       case 'post':
         return `${fromUserName} created a new post`
       case 'comment':

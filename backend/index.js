@@ -32,7 +32,8 @@ const io = new Server(server, {
 app.set('io' , io)
 
 // Make sure uploads directory exists - modern approach
-const uploadsDir = path.join(process.cwd(), "backend", "uploads");
+const uploadsDir = path.join(process.cwd(),"..", "backend", "uploads");
+
 try {
   fs.mkdirSync(uploadsDir, { recursive: true });
 } catch (err) {
@@ -49,7 +50,7 @@ app.use(cors({
 // Make uploads directory accessible
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
+app.use('/uploads', express.static(uploadsDir));
 
 app.set('trust proxy', 1); // important when behind HTTPS reverse proxy
 
@@ -64,8 +65,8 @@ const sessionMiddleware = session({
   }),
   cookie: {
     httpOnly: true,
-    secure: true,   // use true if your backend is running on HTTPS
-    sameSite: "none"
+    secure: false,   // use true if your backend is running on HTTPS
+    sameSite: "lax"
   }
 });
 

@@ -4,7 +4,7 @@ import { IoIosNotifications, IoIosSettings } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from 'react-router-dom';
  
-const SelectionSideBar = ({user , darkMode,notificationsCount}) => {
+const SelectionSideBar = ({user , darkMode,isThereUnseenNotfications}) => {
     const [selectedPage , setSelectedPage]=useState('feed')
     const navigate = useNavigate()
   return (
@@ -56,7 +56,7 @@ const SelectionSideBar = ({user , darkMode,notificationsCount}) => {
         className={`w-auto lg:w-full flex-shrink-0 ${selectedPage==="notifications"?"bg-blue-500 text-white":darkMode?"bg-neutral-700 hover:bg-neutral-800":"bg-white hover:bg-blue-50"} rounded-xl pl-2 transition-all duration-300 h-12 sm:h-16 lg:h-16 flex gap-2 sm:gap-3 cursor-pointer items-center font-semibold text-sm sm:text-base px-3 lg:px-2`}>
             <div className="text-lg relative sm:text-xl">
                 < IoIosNotifications />
-                {notificationsCount>0?(<div className="absolute w-2 h-2 -left-1 -bottom-1 rounded-full bg-blue-500 flex justify-center items-center"></div>):null}
+                {isThereUnseenNotfications&&(<div className="absolute w-2 h-2 -left-1 -bottom-1 rounded-full bg-blue-500 flex justify-center items-center"></div>)}
             </div>
             <div className="whitespace-nowrap">
                 Notifications

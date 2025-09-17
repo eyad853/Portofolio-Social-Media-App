@@ -30,7 +30,7 @@ const Home = ({user,stories,setStories , posts ,setPosts, socket,darkMode , setD
 
     const [showSM,setShowSM]=useState(false)
 
-    const [notificationsCount , setNotificationsCount]=useState(0)
+    const [isThereUnseenNotfications , setIsThereUnseenNotfications]=useState(false)
     
     // Toggle expanded state for a specific post
     const toggleExpandPost = (postId) => {
@@ -195,27 +195,29 @@ try {
   }
 };
 
-const getNotificationsCount = async() => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/getAll`, {withCredentials: true})
-      if (response) {
-        const unseenNotifications = response.data.notifications.map(n=>{
-            return !n.seen
-        })
-        setNotificationsCount(unseenNotifications)
-      }
-    } catch (err) {
-      console.log(err)
-    } finally {
+const getUnseenNotifications = async () => {
+  try {
+    const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/getAll`, {
+      withCredentials: true,
+    });
+
+    if (data?.notifications?.length) {
+      const unseen = data.notifications.some(n => !n.seen);
+      setIsThereUnseenNotfications(unseen); // make sure state setter name is correct
+    } else {
+      setIsThereUnseenNotfications(false);
     }
+  } catch (err) {
+    console.log(err);
   }
+};
 
 useEffect(()=>{
     getPostsLikes()
     getPostComments()
     getUserFollowers()
     getUserFollowing()
-    getNotificationsCount()
+    getUnseenNotifications()
 },[])
 
 // Comments Services
@@ -388,7 +390,7 @@ const handleFollowToggle = async (userId) => {
           />
         </div>
         <div className="mb-4">
-          <SelectionSideBar notificationsCount={notificationsCount} user={user} darkMode={darkMode}/>
+          <SelectionSideBar isThereUnseenNotfications={isThereUnseenNotfications} user={user} darkMode={darkMode}/>
         </div>
         
         {/* Friends/Messages Section for Mobile/Tablet */}
@@ -434,7 +436,7 @@ const handleFollowToggle = async (userId) => {
             userFollowers={userFollowers}
             posts={posts}
             />
-            <SelectionSideBar user={user} darkMode={darkMode}/>
+            <SelectionSideBar isThereUnseenNotfications={isThereUnseenNotfications}  user={user} darkMode={darkMode}/>
         </div>
 
         {/* Main content */}
@@ -455,7 +457,7 @@ const handleFollowToggle = async (userId) => {
                                     {post?.user?.avatar!==""?(
                                         <img src={post?.user?.avatar} className='w-full h-full rounded-full object-cover' alt="" />
                                         ):(
-                                        <div className='w-full text-xl sm:text-3xl h-full flex justify-center items-center mt-1 rounded-full'>
+                                        <div className='w-full text-xl sm:text-3xl h-full flex justify-center items-end mt-1 rounded-full'>
                                             <FaUser className='rounded-b-2xl mt-2'/>
                                         </div>
                                         )}

@@ -8,7 +8,7 @@ import axios from 'axios'; // <-- Make sure to import axios
 
 Modal.setAppElement('#root');
 
-const Login = () => {
+const Login = ({setTrigger}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Login = () => {
 
             // If the login is successful (status 200), navigate to home
             if (response.status === 200) {
-                console.log("Login successful:", response.data.message);
+                setTrigger(prev=>prev+1)
                 navigate('/home');
             }else if (response.status===400 ||401 ||500){
                 navigate('/')

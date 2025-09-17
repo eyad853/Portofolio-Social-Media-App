@@ -25,9 +25,11 @@ export const normalSignUp = async (req, res) => {
 
     try {
         const isAccountExisted = await User.findOne({ email });
-        
         if (isAccountExisted) {
-            return res.redirect(`${process.env.frontendURL}/login`)
+            return res.status(400).json({
+                error: true,
+                message: "Account already exists"
+            });
         }
 
         // Hash the password before saving
@@ -46,23 +48,18 @@ export const normalSignUp = async (req, res) => {
 
         await newUser.save();
 
-        const newSettings = new settingsModel({
-            user: newUser._id
-        });
-        await newSettings.save();
-
         // Log in the user right after signup using Passport's req.login
-        req.login(newUser, (err) => {
-            if (err) {
-                console.error("Login after signup failed:", err);
-                // If login fails, redirect to login page with a status
-                return res.redirect(`${process.env.frontendURL}/login?auth_status=signup_login_failed`);
-            }
-            console.log("User logged in after signup (server-side):", req.user?._id || 'User object not available');
-            // Redirect after successful login to ensure session cookie is properly set by browser
-            console.log(process.env.frontendURL)
-            res.redirect(`${process.env.frontendURL}/home`); // Redirect to home page
-        });
+req.login(newUser, (err) => {
+  if (err) {
+    console.error("Login after signup failed:", err);
+    return res.status(500).json({ error: true, message: "Signup succeeded but login failed" });
+  }
+
+  console.log("User logged in after signup:", req.user?._id || 'User object not available');
+
+  // ❌ No response here → browser never gets cookie
+  return res.status(200).json({ error: false, message: "Signup successful" }); // ✅ Must return JSON
+});
     } catch (error) {
         console.error("Signup error:", error); // Log the actual error
         res.status(500).json({
@@ -151,8 +148,8 @@ failureRedirect: `${process.env.frontendURL}/login`
 // posts
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      const __dirname = path.dirname(__filename);
       const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
       const uploadDir =  path.join(__dirname, "..", "uploads", "posts");
       
       // Create the uploads directory if it doesn't exist
@@ -773,8 +770,7 @@ export const getSinglePostComments = async (req, res) => {
 
 export const getAllRequests = async( req , res)=>{
   try{
-    const requests = await friendsModel.find()
-
+    const requests = await friendsModel.find().populate('requester').populate('recipient');
     return res.status(200).json({
       error:false,
       requests
@@ -864,39 +860,37 @@ export const respondRequest = async (req, res) => {
 
   const io = req.app.get('io');
 
-  if (action === 'accept') {
-    friendship.status = 'accepted';
-    friendship.updatedAt = new Date();
+  // Update friendship status
+  friendship.status = action === 'accept' ? 'accepted' : 'rejected';
+  friendship.updatedAt = new Date();
+  await friendship.save();
 
+  // Update friends list if accepted
+  if (action === 'accept') {
     await User.findByIdAndUpdate(requesterId, { $push: { friends: recipientId } });
     await User.findByIdAndUpdate(recipientId, { $push: { friends: requesterId } });
+  }
 
-    await friendship.save();
+  // Update notification
+  const notification = await notificationModel.findOneAndUpdate(
+    {
+      user: recipientId,
+      fromUser: requesterId,
+      type: "friend_request"
+    },
+    {
+      type: action === "accept" ? "friend_accepted" : "friend_rejected",
+      message:
+        action === "accept"
+          ? "accepted your friend request"
+          : "rejected your friend request",
+      updatedAt: new Date()
+    },
+    { new: true }
+  );
 
-    // ✅ Store notification
-    const notification = await notificationModel.create({
-      user: requesterId,
-      fromUser: recipientId,
-      type: "friend_accepted",
-      message: "accepted your friend request"
-    });
-
-    io.to(requesterId.toString()).emit('notification', notification);
-
-  } else if (action === 'reject') {
-    friendship.status = 'rejected';
-    friendship.updatedAt = new Date();
-
-    await friendship.save();
-
-    // ✅ Store notification
-    const notification = await notificationModel.create({
-      user: requesterId,
-      fromUser: recipientId,
-      type: "friend_rejected",
-      message: "rejected your friend request"
-    });
-
+  // Emit notification once
+  if (notification) {
     io.to(requesterId.toString()).emit('notification', notification);
   }
 
@@ -997,6 +991,23 @@ export const sendMessageToFriend = async (req, res) => {
         error:false,
         user
       })
+    }catch(err){
+      return res.status(500).json({
+        error:true,
+        message:err
+      })
+    }
+  }
+
+  export const getProfilePosts = async(req , res)=>{
+    const {id}=req.params
+    try{
+        const posts = await postModel.find({user:id}).populate("user")
+
+        res.status(200).json({
+            error:false,
+            posts
+        })
     }catch(err){
       return res.status(500).json({
         error:true,
@@ -1273,6 +1284,7 @@ export const getNotifications = async (req, res) => {
     const notifications = await notificationModel
       .find({ user: userId })
       .populate('fromUser') // Only fetch basic sender info
+      .populate('user')
       .populate({
       path: 'post',
       match: { _id: { $exists: true } },  

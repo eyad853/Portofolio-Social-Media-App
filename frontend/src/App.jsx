@@ -124,8 +124,8 @@ const fetchAllPosts = async()=>{
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Signup/>}/>
-        <Route path="/login"  element={<Login />}/>
+        <Route path="/" element={<Signup setTrigger={setTrigger}/>}/>
+        <Route path="/login"  element={<Login setTrigger={setTrigger}/>}/>
         <Route path="/home"   element={<HomeLayOut />}>
           <Route index element={
           loadingPosts&&loadingUser?(

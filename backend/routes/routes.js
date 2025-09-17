@@ -17,6 +17,7 @@ import {
     getNotifications, 
     getPostLikes, 
     getPostsComments, 
+    getProfilePosts, 
     getProfileUser,   
     getSharedPost,  
     getSinglePostComments,  
@@ -101,7 +102,9 @@ router.post('/messages/:friendId', sendMessageToFriend);
 
 // profile
 router.get('/getProfileUser/:id' , getProfileUser)
+router.get('/getProfilePosts/:id' , getProfilePosts)
 router.patch('/updateUserProfile', uploadProfileImages , updateUserProfile)
+
 
 // settings 
 router.patch("/settings/updateUserInfo", uploadProfileImages , updateUserInfo)
@@ -116,7 +119,7 @@ router.get('/stories/getAll', getFeedStories);
 
 // notifications
 router.get('/notifications/getAll' , getNotifications)
-router.post('/notifications/markAsSeen' , markNotificationsAsSeen)
+router.patch('/notifications/markAsSeen' , markNotificationsAsSeen)
 
 
 

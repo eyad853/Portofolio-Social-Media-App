@@ -14,7 +14,10 @@ import LikesModal from '../../modals/LikesModal/LikesModal'
 
 const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode}) => {
   const [selectedSection, setSelectedSection] = useState('posts')
+  
   const {userId}=useParams()
+  const [profileUser , setProfileUser]=useState({})
+
   const [loading , setLoading]=useState(false)
 
   // modals
@@ -30,6 +33,8 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
 
   const [expandedPosts, setExpandedPosts] = useState({});
   const [expandedMedia, setExpandedMedia] = useState({});
+
+  const [requests , setRequests]=useState([])
 
   const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -142,10 +147,29 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
             [mediaKey]: !prev[mediaKey]
         }));
     };
+    
+
+    useEffect(()=>{
+        const getUserProfile = async() =>{
+          try{
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProfileUser/${userId}`)
+          if(!response.error){
+            setProfileUser(response.data.user)
+          }
+          }catch(error){
+            console.log(error);
+      }
+    }
+    if(user._id!==userId){
+      getUserProfile()
+    }
+    },[])
+
+    
 
   const fetchAllPosts = async() => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/post/getAll` ,{withCredentials:true})
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProfilePosts/${userId}`)
       setPosts(response.data.posts)
     } catch(err) {
       console.log(err);
@@ -153,20 +177,20 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
   }
 
   useEffect(() => {
+  const fetchData = async () => {
     setLoading(true)
-    fetchAllPosts()
-    getPostsLikes()
-    getPostComments()
+    await Promise.all([fetchAllPosts(), getPostsLikes(), getPostComments()])
     setLoading(false)
-    
-  }, [])
+  }
+  fetchData()
+}, [])
 
   const userPosts = posts.filter(post => post.user?._id === user._id)
   const likedPosts = posts.filter(post => 
   post?.likes?.some(u => u?._id === user._id)
 );
     
-  const showedPosts = selectedSection === "posts" ? userPosts : likedPosts
+  const showedPosts = user?._id?.toString()===userId?selectedSection === "posts" ? userPosts : likedPosts:posts
 
   // Handle cover photo upload
 const handleCoverPhotoUpload = async (e) => {
@@ -200,6 +224,8 @@ const handleCoverPhotoUpload = async (e) => {
     e.target.value = ''
   }
 }
+
+
 
 // Handle avatar upload
 const handleAvatarUpload = async (e) => {
@@ -361,6 +387,56 @@ try {
     throw error.response?.data || { message: 'Something went wrong' };
 }
 };
+
+const hasRequested = (uid) =>requests.some((r) => r.requester._id === user._id && r.recipient._id === uid);
+
+    const sendRequest = async (recipientId) => {
+        // Optimistically update UI
+        const alreadySent = hasRequested(recipientId);
+
+        if (!alreadySent) {
+          // Add to requests immediately
+          setRequests((prev) => [
+            ...prev,
+            { requester: { _id: user._id }, recipient: { _id: recipientId } }
+          ]);
+        } else {
+          // Remove from requests immediately
+          setRequests((prev) =>
+            prev.filter(
+              (r) =>
+                !(
+                    (r.recipient._id === recipientId && r.requester._id === user._id) ||
+                    (r.requester._id === recipientId && r.recipient._id === user._id)
+                )
+            )
+          );
+        }
+    
+        // Then send request to server
+        try {
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/sendRequest/${recipientId}`, {}, {
+            withCredentials: true,
+          });
+        } catch (err) {
+          console.log(err);
+          // Optional: rollback UI if request failed
+          if (!alreadySent) {
+            // Remove the one we just added
+            setRequests((prev) =>
+              prev.filter(
+                (r) => !(r.recipient._id === recipientId && r.requester._id === user._id)
+              )
+            );
+            } else {
+            // Re-add it if cancel failed
+            setRequests((prev) => [
+                ...prev,
+                { requester: { _id: user._id }, recipient: { _id: recipientId } }
+            ]);
+            }
+        }
+    };
 
   // Post component for rendering individual posts
   const PostItem = ({ post }) => (
@@ -596,35 +672,47 @@ try {
       <Nav user={user} darkMode={darkMode}/>
       <div className="flex-1 px-3 sm:px-8 lg:px-20 overflow-auto">
         {/* Cover Photo Section */}
-        <div className="w-full h-40 sm:h-48 md:h-60 relative rounded-b transition-all duration-300 cursor-pointer flex hover:bg-neutral-200 justify-center items-end">
+        <div className={`w-full h-40 sm:h-48 md:h-60 relative rounded-b transition-all duration-300 cursor-pointer flex ${user?._id?.toString()===userId?"hover:bg-neutral-200":null}  justify-center items-end`}>
           {/* coverPhoto */}
-          {user?.coverPhoto ? (
+          {user?._id?.toString()===userId?user?.coverPhoto ? (
             <img src={user.coverPhoto} className='w-full h-full object-cover' alt="" />
           ) : (
             <div className="w-full h-full flex border-x border-b border-neutral-300 justify-center overflow-hidden">
               <FaUserPlus size={window.innerWidth < 640 ? 150 : window.innerWidth < 768 ? 200 : 270} className='text-neutral-700' />
             </div>
+          ):profileUser?.coverPhoto ? (
+            <img src={profileUser.coverPhoto} className='w-full h-full object-cover' alt="" />
+          ) : (
+            <div className="w-full h-full flex border-x border-b border-neutral-300 justify-center overflow-hidden">
+              <FaUserPlus size={window.innerWidth < 640 ? 150 : window.innerWidth < 768 ? 200 : 270} className='text-neutral-700' />
+            </div>
           )}
-          <input 
+          {user?._id?.toString()===userId&&<input 
           type="file" 
           name='coverPhoto' 
           className='w-full h-full opacity-0 z-10 absolute cursor-pointer' 
           accept="image/*"
           onChange={handleCoverPhotoUpload}
-          />
+          />}
 
           {/* Profile Picture */}
           <div className="absolute left-3 sm:left-8 lg:left-20 -bottom-8 sm:-bottom-12 md:-bottom-14 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full border border-neutral-400">
             <div className="relative w-full h-full rounded-full">
-              <input 
+              {user?._id?.toString()===userId&&<input 
               type="file" 
               name="avatar" 
               className='w-full h-full absolute opacity-0 z-10 cursor-pointer' 
               accept="image/*"
               onChange={handleAvatarUpload}
-              />
-              {user?.avatar ? (
+              />}
+              {user?._id?.toString()===userId?user?.avatar ? (
                 <img src={user.avatar} className='w-full h-full rounded-full object-cover' alt="" />
+              ) : (
+                <div className='w-full h-full rounded-full text-neutral-800 flex justify-center items-end overflow-hidden'>
+                  <FaUser size={window.innerWidth < 640 ? 45 : window.innerWidth < 768 ? 65 : 90}/>
+                </div>
+              ):profileUser?.avatar ? (
+                <img src={profileUser.avatar} className='w-full h-full rounded-full object-cover' alt="" />
               ) : (
                 <div className='w-full h-full rounded-full text-neutral-800 flex justify-center items-end overflow-hidden'>
                   <FaUser size={window.innerWidth < 640 ? 45 : window.innerWidth < 768 ? 65 : 90}/>
@@ -636,20 +724,20 @@ try {
 
         {/* User Info Section */}
         <div className={`w-full border-b border-l border-r ${darkMode?"bg-neutral-700 text-white":"bg-white"} border-neutral-300 flex flex-col px-3 sm:px-6 lg:px-8 pt-10 sm:pt-14 md:pt-16 pb-4 sm:pb-6`}>
-          <div className="text-lg sm:text-xl md:text-2xl font-bold">{user?.username}</div>
+          <div className="text-lg sm:text-xl md:text-2xl font-bold">{user?._id?.toString()===userId?user?.username:profileUser?.username}</div>
           
           {/* Bio Section */}
           <div className="text-gray-400 font-semibold mt-1.5">
             {user?.bio ? (
               <div 
-                onClick={() => setIsBioModalOpen(true)}
+                onClick={() => {user?._id?.toString()===userId&&setIsBioModalOpen(true)}}
                 className="cursor-pointer text-sm sm:text-base"
               >
-                {user.bio}
+                {user?._id?.toString()===userId?user.bio:profileUser.bio}
               </div>
             ) : (
               <div 
-                onClick={() => setIsBioModalOpen(true)}
+                onClick={() => {user?._id?.toString()===userId&&setIsBioModalOpen(true)}}
                 className="py-1 px-2 sm:px-3 cursor-pointer hover:bg-neutral-200 inline-block rounded-2xl transition-all duration-300 text-sm sm:text-base"
               >
                 No bio yet.
@@ -671,12 +759,14 @@ try {
 
           {/* Social Links */}
           <div
-            onClick={() => setLinksModalOpen(true)}
-            className="mt-3 h-auto sm:h-10 flex flex-col sm:flex-row items-start sm:items-center gap-2 cursor-pointer p-1 pr-3 hover:bg-neutral-200 transition-all duration-300 font-bold rounded"
+            onClick={() => {user?._id?.toString()===userId&&setLinksModalOpen(true)}}
+            className={`mt-3 h-auto sm:h-10 flex flex-col sm:flex-row items-start sm:items-center gap-2 cursor-pointer p-1 pr-3 ${user?._id?.toString()===userId?"hover:bg-neutral-200":null} transition-all duration-300 font-bold rounded`}
           >
-            <div className="text-sm sm:text-base">Social Links:</div>
+            {user?._id?.toString()===userId?(<div className="text-sm sm:text-base">Social Links:</div>):(
+              Object?.values(profileUser?.socialLinks||{}).every(link => link === "")?null:(<div className="text-sm sm:text-base">Social Links:</div>)
+            )}
             <div className="flex flex-1 items-center gap-2 sm:gap-3">
-              {user?.socialLinks && Object.values(user.socialLinks).some(link => link) ? (
+              {user?._id?.toString()===userId?user?.socialLinks && Object.values(user.socialLinks).some(link => link) ? (
                 <div className="flex items-center gap-2 flex-wrap">
                   {Object.entries(user.socialLinks).map(([platform, url]) =>
                     url ? (
@@ -695,6 +785,26 @@ try {
                 </div>
               ) : (
                 <div className="flex-1 text-gray-500 font-semibold text-sm sm:text-base">No Links Yet</div>
+              ):
+              profileUser?.socialLinks && Object.values(profileUser.socialLinks).some(link => link) ? (
+                <div className="flex items-center gap-2 flex-wrap">
+                  {Object.entries(profileUser.socialLinks).map(([platform, url]) =>
+                    url ? (
+                      <a
+                        key={platform}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full ${platform==="X"?"bg-black text-white":platform==="instagram"?"bg-gradient-to-b from-pink-500 via-red-600 to-yellow-300  text-white":platform==="linkedin"?"bg-blue-500 text-white":platform==="facebook"?"bg-blue-600 text-white":platform==="youtube"?"bg-red-600 text-white":"bg-white border border-neutral-500 text-black"} flex items-center justify-center text-xs font-bold uppercase`}
+                        title={platform}
+                      >
+                        {platform[0]}
+                      </a>
+                    ) : null
+                  )}
+                </div>
+              ) : (
+                null
               )}
             </div>
           </div>
@@ -702,22 +812,25 @@ try {
           {/* Follow/Add Friend Buttons */}
           {user._id!==userId&&(
           <div className="flex flex-col sm:flex-row items-center h-auto sm:h-20 justify-center gap-2 sm:gap-3 mt-4 sm:mt-0">
-            <div 
+            {!user?.friends?.some(friend => friend._id?.toString() === userId.toString())?(<div 
             onClick={()=>{
-              
+              sendRequest(userId)
             }}
-            className="w-full sm:w-32 md:w-40 h-10 rounded-md font-bold transform hover:scale-105 transition-all duration-300 cursor-pointer bg-blue-500 flex justify-center items-center text-white text-sm sm:text-base">Follow</div>
-            <div 
-            onClick={()=>{
-              
-            }}
-            className="w-full sm:w-32 md:w-40 h-10 rounded-md font-bold transform hover:scale-105 transition-all duration-300 cursor-pointer bg-blue-500 flex justify-center items-center text-white text-sm sm:text-base">Add Friend</div>
+            className={`w-full sm:w-32 md:w-60 h-10 rounded-md font-bold transform hover:scale-105 
+            transition-all duration-300 cursor-pointer ${hasRequested(userId) ? "bg-red-500" : "bg-blue-500"} 
+            flex justify-center items-center text-white text-sm sm:text-base`}>
+              {hasRequested(userId) ? "Cancel" : "Add Friend"}
+            </div>):(
+              <div className={`w-full sm:w-32 md:w-60 h-10 rounded-md font-bold transform hover:scale-105 
+            transition-all duration-300 cursor-pointer bg-neutral-400 
+            flex justify-center items-center text-white text-sm sm:text-base`}>Friends</div>
+            )}
           </div>
         )}
         </div>
 
         {/* Posts/Liked Tabs */}
-        <div className="w-full h-8 sm:h-9 flex">
+        {user?._id?.toString()===userId&&(<div className="w-full h-8 sm:h-9 flex">
           <div 
             onClick={() => setSelectedSection('posts')}
             className={`w-1/2 px-2 rounded-b-2xl ${darkMode?"bg-neutral-600 text-white":"bg-white"} ${selectedSection === 'posts' ? "border-b-2 h-8 sm:h-9 border-x-2" : "border-b h-7 sm:h-8 border-x"} border-neutral-500 cursor-pointer flex items-center justify-center font-bold text-xs sm:text-sm md:text-base`}
@@ -732,7 +845,7 @@ try {
             <span className="hidden sm:inline">Liked ({likedPosts.length})</span>
             <span className="sm:hidden">Liked ({likedPosts.length})</span>
           </div>
-        </div>
+        </div>)}
 
         {/* Posts Section */}
         <div className="min-h-[40vh] w-full py-2 sm:py-4">

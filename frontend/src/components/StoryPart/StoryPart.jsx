@@ -117,11 +117,13 @@ const StoryPart = ({ stories, setStories, user, darkMode,setShowSM }) => {
                     handleClick()
                   }}
                 >
-                  <img 
-                    src={friend.avatar} 
-                    className='w-full h-full rounded-full object-cover' 
-                    alt={`${friend.username}'s avatar`} 
-                  />
+                  {friend && friend?.avatar ? (
+              <img src={friend.avatar} className='w-full h-full rounded-full object-cover' />
+            ) : (
+              <div className='w-full text-5xl h-full flex overflow-hidden justify-center items-center mt-1 rounded-full bg-gray-200'>
+                <FaUser className='rounded-b-2xl mt-2.5 text-gray-500' />
+              </div>
+            )}
                 </div>
                 {friendHasStories && (
                   <div className='absolute inset-0 border-2 border-green-400 rounded-full animate-pulse'></div>

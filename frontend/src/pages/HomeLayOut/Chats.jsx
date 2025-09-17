@@ -265,7 +265,6 @@ const Chats = ({user,socket,darkMode}) => {
                                             {f?.avatar ? (
                                                 <img
                                                     src={f.avatar}
-                                                    alt={f.username}
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
