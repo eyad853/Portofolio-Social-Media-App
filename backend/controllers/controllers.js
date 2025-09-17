@@ -16,6 +16,8 @@ import bcrypt from 'bcrypt'
 import settingsModel from "../schemas/Settings.js";
 import Story from "../schemas/stoty.js";
 import notificationModel from "../schemas/notifications.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const saltRounds = 10; // Define saltRounds for bcrypt hashing
 
@@ -148,8 +150,6 @@ failureRedirect: `${process.env.frontendURL}/login`
 // posts
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
       const uploadDir =  path.join(__dirname, "..", "uploads", "posts");
       
       // Create the uploads directory if it doesn't exist
@@ -1234,8 +1234,6 @@ export const createStory = async (req, res) => {
   }
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 // Delete a story
 export const deleteStory = async (req, res) => {
   try {
