@@ -32,7 +32,9 @@ const io = new Server(server, {
 app.set('io' , io)
 
 // Make sure uploads directory exists - modern approach
-const uploadsDir = path.join(process.cwd(),"..", "backend", "uploads");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "uploads", "posts");
 
 try {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -47,9 +49,6 @@ app.use(cors({
   credentials: true
 }));
 
-// Make uploads directory accessible
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(uploadsDir));
 
 app.set('trust proxy', 1); // important when behind HTTPS reverse proxy
