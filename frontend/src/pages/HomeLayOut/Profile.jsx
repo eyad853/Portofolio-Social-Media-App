@@ -388,6 +388,18 @@ try {
 }
 };
 
+const getRequests = async()=>{
+        try{
+            setLoading(true)
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getAllRequests`)
+            setRequests(response.data.requests)
+            console.log(response.data.requestes);
+            setLoading(false)
+        }catch(err){
+            console.log(err);
+        }
+    }
+
 const hasRequested = (uid) =>requests.some((r) => r.requester._id === user._id && r.recipient._id === uid);
 
     const sendRequest = async (recipientId) => {
