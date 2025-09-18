@@ -387,7 +387,7 @@ try {
     throw error.response?.data || { message: 'Something went wrong' };
 }
 };
-
+useEffect(()=>{
 const getRequests = async()=>{
         try{
             setLoading(true)
@@ -399,6 +399,9 @@ const getRequests = async()=>{
             console.log(err);
         }
     }
+    getRequests()
+},[])
+
 
 const hasRequested = (uid) =>requests.some((r) => r.requester._id === user._id && r.recipient._id === uid);
 
