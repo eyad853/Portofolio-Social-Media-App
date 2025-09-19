@@ -35,7 +35,6 @@ app.set('io' , io)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "uploads");
-console.log(uploadsDir);
 
 try {
   fs.mkdirSync(uploadsDir, { recursive: true });
