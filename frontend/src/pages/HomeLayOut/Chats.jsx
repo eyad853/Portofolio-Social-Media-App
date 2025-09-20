@@ -133,7 +133,7 @@ const Chats = ({user,socket,darkMode}) => {
                         <div className="flex-1 flex justify-center items-center">
                             <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full border-y-2 border-blue-600 animate-spin"></div>
                         </div>
-                    ):(<div className={`flex-1 overflow-y-auto px-3 sm:px-5 py-3 sm:py-4 ${darkMode ? 'bg-neutral-800' : 'bg-gray-50'}`}>
+                    ):(<div className={`flex-1 overflow-y-auto hide-scrollbar px-3 sm:px-5 py-3 sm:py-4 ${darkMode ? 'bg-neutral-800' : 'bg-gray-50'}`}>
                         {selectedFriend ? (
                             <div className="flex flex-col gap-3 sm:gap-4">
                                 {messages && messages.length > 0 ? (
