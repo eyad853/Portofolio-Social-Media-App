@@ -151,7 +151,7 @@ const Chats = ({user,socket,darkMode}) => {
                                                         : `${darkMode ? 'bg-neutral-700 text-white border border-neutral-600' : 'bg-white text-gray-800 border border-gray-200'} rounded-bl-none`
                                                 }`}
                                             >
-                                                <p className="text-xs sm:text-sm">{msg.message}</p>
+                                                <p className="text-xs sm:text-sm break-all">{msg.message}</p>
                                                 <p
                                                     className={`text-xs mt-1 ${
                                                         msg.sender === user._id
