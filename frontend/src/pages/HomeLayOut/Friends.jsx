@@ -167,7 +167,7 @@ const Friends = ({socket , user , darkMode}) => {
                                               {!hasRequested(u._id) && (
                                                   <div 
                                                   onClick={()=>{
-                                                      setUsers(prev=>prev.filter(u=>u._id!==u._id))
+                                                      setShowingUsers(prev=>prev.filter(u=>u._id!==u._id))
                                                   }}
                                                   className="bg-red-600 flex cursor-pointer z-20 transform hover:scale-105 transition-all duration-300 justify-center items-center h-7 sm:h-8 w-20 sm:w-28 rounded-md text-xs font-bold text-white">
                                                       Remove
