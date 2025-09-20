@@ -454,7 +454,7 @@ const handleFollowToggle = async (userId) => {
                         <div className='w-full h-12 rounded-t-2xl flex items-center justify-between px-2.5'>
                             <div className='h-full flex justify-start items-center gap-2.5'>
                                 <Link to={`/home/profile/${post?.user?._id}`} className='w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center'>
-                                    {post?.user?.avatar!==""?(
+                                    {post?.user?.avatar?(
                                         <img src={post?.user?.avatar} className='w-full h-full rounded-full object-cover' alt="" />
                                         ):(
                                         <div className='w-full text-xl sm:text-3xl h-full flex justify-center items-end mt-1 rounded-full'>
