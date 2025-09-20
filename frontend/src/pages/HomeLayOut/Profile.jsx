@@ -190,7 +190,7 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
   post?.likes?.some(u => u?._id === userId)
 );
     
-  const showedPosts = user?._id?.toString()===userId?selectedSection === "posts" ? userPosts : likedPosts:posts
+  const showedPosts = user?._id?.toString()===userId?selectedSection === "posts" ? userPosts : likedPosts:userPosts
 
   // Handle cover photo upload
 const handleCoverPhotoUpload = async (e) => {
