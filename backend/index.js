@@ -64,8 +64,8 @@ const sessionMiddleware = session({
   }),
   cookie: {
     httpOnly: true,
-    secure: true,   // use true if your backend is running on HTTPS
-    sameSite: "none"
+    secure: false,   // use true if your backend is running on HTTPS
+    sameSite: "lax"
   }
 });
 

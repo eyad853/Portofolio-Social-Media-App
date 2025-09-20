@@ -1000,7 +1000,6 @@ export const sendMessageToFriend = async (req, res) => {
   }
 
   export const getProfilePosts = async(req , res)=>{
-    const {id}=req.params
     try{
         const posts = await postModel.find({user:id}).populate("user")
 

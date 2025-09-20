@@ -169,7 +169,7 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
 
   const fetchAllPosts = async() => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProfilePosts/${userId}`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/post/getAll`)
       setPosts(response.data.posts)
     } catch(err) {
       console.log(err);
@@ -185,9 +185,9 @@ const Profile = ({user, socket , setUser ,userFollowing,userFollowers,darkMode})
   fetchData()
 }, [])
 
-  const userPosts = posts.filter(post => post.user?._id === user._id)
+  const userPosts = posts.filter(post => post.user?._id === userId)
   const likedPosts = posts.filter(post => 
-  post?.likes?.some(u => u?._id === user._id)
+  post?.likes?.some(u => u?._id === userId)
 );
     
   const showedPosts = user?._id?.toString()===userId?selectedSection === "posts" ? userPosts : likedPosts:posts
