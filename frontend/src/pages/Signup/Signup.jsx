@@ -204,7 +204,7 @@ const Signup = ({setTrigger}) => {
                       {/* Right part: Avatar Preview */}
                       <div className='h-60 lg:h-full w-full lg:w-1/2 flex items-center justify-center '>
                           <div className='w-48 lg:w-80 ml-4 lg:ml-10 relative h-48 lg:h-80 text-white bg-gray-900 hover:bg-gray-950 transition-all duration-200 rounded-full'>
-                              <div className='w-full h-full rounded-full text-white flex justify-center items-center overflow-hidden'>
+                              <div className='w-full h-full rounded-full text-white flex justify-center items-end overflow-hidden'>
                                   {preview ? (
                                       <img src={preview} alt="Profile Preview" className="w-full h-full object-cover" />
                                   ) : (
