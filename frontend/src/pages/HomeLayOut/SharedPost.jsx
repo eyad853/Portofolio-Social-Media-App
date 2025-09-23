@@ -403,7 +403,7 @@ const SharedPost = ({ darkMode, user, userFollowing, userFollowers, socket, post
 
     // Render the post once it's available
     return (
-    <div className={`w-screen h-screen pb-10 ${darkMode ? "bg-neutral-800" : "bg-gray-50"}`}>
+    <div className={`w-screen h-screen overflow-auto overflow-x-hidden pb-10 ${darkMode ? "bg-neutral-800" : "bg-gray-50"}`}>
         <header className='fixed top-0 left-0 right-0 z-10'>
             <Nav user={user} darkMode={darkMode}/>
         </header>
