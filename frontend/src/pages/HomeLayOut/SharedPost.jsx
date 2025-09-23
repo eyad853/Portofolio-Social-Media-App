@@ -403,216 +403,215 @@ const SharedPost = ({ darkMode, user, userFollowing, userFollowers, socket, post
 
     // Render the post once it's available
     return (
-        <div className="w-screen h-screen pb-10">
-            <header className='fixed top-0 left-0 right-0 z-10'>
-                <Nav user={user} />
-            </header>
+    <div className={`w-screen h-screen pb-10 ${darkMode ? "bg-neutral-800" : "bg-gray-50"}`}>
+        <header className='fixed top-0 left-0 right-0 z-10'>
+            <Nav user={user} darkMode={darkMode}/>
+        </header>
 
-            <div className="w-full px-10 pb-10 h-full pt-16">
-                <Link to={'/home'} className="">
-                    <FaCaretLeft size={50} />
-                </Link>
+        <div className="w-full px-10 pb-10 h-full pt-16">
+            <Link to={'/home'} className={`${darkMode ? "text-white hover:text-gray-300" : "text-black hover:text-gray-700"} transition-colors duration-200`}>
+                <FaCaretLeft size={50} />
+            </Link>
 
-                <div
-                    className={`w-full ${darkMode ? "bg-neutral-700 text-white" : "bg-white"} border flex flex-col ${darkMode ? "border-neutral-800" : "border-neutral-300"} mt-6 rounded-2xl`}
-                >
-                    <div className='w-full h-12 rounded-t-2xl flex items-center justify-between px-2.5'>
-                        <div className='h-full flex justify-start items-center gap-2.5'>
-                            <Link to={`/home/profile/${post.user._id}`} className='w-10 h-10 rounded-full flex justify-center items-center '>
-                                {post?.user?.avatar !== "" ? (
-                                    <img src={post?.user?.avatar} className='w-full h-full rounded-full object-cover' alt="" />
-                                ) : (
-                                    <div className='w-full text-3xl h-full flex justify-center items-center mt-1 rounded-full '>
-                                        <FaUser className='rounded-b-2xl mt-2' />
-                                    </div>
-                                )}
-                            </Link>
-                            <Link to={`/home/profile/${post.user._id}`} className='font-semibold'>
-                                {post?.user?.username}
-                            </Link>
-                            {post?.user?._id !== user?._id && (
-                                <div
-                                    onClick={() => handleFollowToggle(post?.user?._id)}
-                                    className={`cursor-pointer flex items-center px-2 py-1 rounded ${
-                                        userFollowing.includes(post?.user?._id)
-                                            ? 'text-gray-500 '
-                                            : 'text-blue-500'
-                                    }`}
-                                >
-                                    {userFollowing.includes(post?.user?._id) ? 'Following' : 'Follow'}
-                                </div>)}
-                        </div>
-
-                        <div className='flex text-xl items-center justify-between h-full w-20 '>
-                            <div className="w-10 h-10 rounded-full hover:bg-neutral-200 transition-all duration-200 flex justify-center items-center">
-                                < IoEllipsisHorizontal />
-                            </div>
-                            <div className="w-10 h-10 rounded-full hover:bg-neutral-200 transition-all duration-200 flex justify-center items-center">
-                                < IoMdClose />
-                            </div>
-                        </div>
+            <div
+                className={`w-full ${darkMode ? "bg-neutral-700 text-white border-neutral-600" : "bg-white text-black border-neutral-300"} border flex flex-col mt-6 rounded-2xl shadow-lg`}
+            >
+                <div className='w-full h-12 rounded-t-2xl flex items-center justify-between px-2.5'>
+                    <div className='h-full flex justify-start items-center gap-2.5'>
+                        <Link to={`/home/profile/${post.user._id}`} className='w-10 h-10 rounded-full flex justify-center items-center '>
+                            {post?.user?.avatar !== "" ? (
+                                <img src={post?.user?.avatar} className='w-full h-full rounded-full object-cover' alt="" />
+                            ) : (
+                                <div className={`w-full text-3xl h-full flex justify-center items-center mt-1 rounded-full ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
+                                    <FaUser className='rounded-b-2xl mt-2' />
+                                </div>
+                            )}
+                        </Link>
+                        <Link to={`/home/profile/${post.user._id}`} className={`font-semibold ${darkMode ? "text-white hover:text-gray-300" : "text-black hover:text-gray-700"} transition-colors duration-200`}>
+                            {post?.user?.username}
+                        </Link>
+                        {post?.user?._id !== user?._id && (
+                            <div
+                                onClick={() => handleFollowToggle(post?.user?._id)}
+                                className={`cursor-pointer flex items-center px-2 py-1 rounded transition-colors duration-200 ${
+                                    userFollowing.includes(post?.user?._id)
+                                        ? darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'
+                                        : 'text-blue-500 hover:text-blue-600'
+                                }`}
+                            >
+                                {userFollowing.includes(post?.user?._id) ? 'Following' : 'Follow'}
+                            </div>)}
                     </div>
 
-                    <div className='w-full flex-1 flex flex-col rounded-b-2xl'>
-                        {/*content */}
-                        <div className='w-full flex-1 flex flex-col'>
-                            <div className='px-3 py-2'>
-                                {/* Text content with read more functionality */}
-                                {post.content.length > 150 && !expandedPosts[post._id] ? (
-                                    <div>
-                                        <p className='mb-1'>{post.content.substring(0, 250)}...</p>
+                    <div className='flex text-xl items-center justify-between h-full w-20 '>
+                        <div className={`w-10 h-10 rounded-full ${darkMode ? "hover:bg-neutral-600 text-gray-300" : "hover:bg-neutral-200 text-gray-600"} transition-all duration-200 flex justify-center items-center cursor-pointer`}>
+                            <IoEllipsisHorizontal />
+                        </div>
+                        <div className={`w-10 h-10 rounded-full ${darkMode ? "hover:bg-neutral-600 text-gray-300" : "hover:bg-neutral-200 text-gray-600"} transition-all duration-200 flex justify-center items-center cursor-pointer`}>
+                            <IoMdClose />
+                        </div>
+                    </div>
+                </div>
+
+                <div className='w-full flex-1 flex flex-col rounded-b-2xl'>
+                    {/*content */}
+                    <div className='w-full flex-1 flex flex-col'>
+                        <div className='px-3 py-2'>
+                            {/* Text content with read more functionality */}
+                            {post.content.length > 150 && !expandedPosts[post._id] ? (
+                                <div>
+                                    <p className={`mb-1 ${darkMode ? "text-gray-200" : "text-gray-800"}`}>{post.content.substring(0, 250)}...</p>
+                                    <button
+                                        onClick={() => toggleExpandPost(post._id)}
+                                        className='text-blue-500 hover:text-blue-600 hover:underline font-medium transition-colors duration-200'
+                                    >
+                                        Read more
+                                    </button>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p className={`mb-1 ${darkMode ? "text-gray-200" : "text-gray-800"}`}>{post.content}</p>
+                                    {post.content.length > 150 && expandedPosts[post._id] && (
                                         <button
                                             onClick={() => toggleExpandPost(post._id)}
-                                            className='text-blue-500 hover:underline font-medium'
+                                            className='text-blue-500 hover:text-blue-600 hover:underline font-medium transition-colors duration-200'
                                         >
-                                            Read more
+                                            Show less
                                         </button>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <p className='mb-1'>{post.content}</p>
-                                        {post.content.length > 150 && expandedPosts[post._id] && (
-                                            <button
-                                                onClick={() => toggleExpandPost(post._id)}
-                                                className='text-blue-500 hover:underline font-medium'
-                                            >
-                                                Show less
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-
-                            {post.media.length > 0 && (
-                                <div className='w-full flex flex-col gap-3 mb-2'>
-                                    {post.media.map((mediaItem, index) => {
-                                        const mediaKey = `${post._id}-${index}`;
-                                        const isExpanded = expandedMedia[mediaKey];
-
-                                        return (
-                                            <div key={index} className="w-full">
-                                                {mediaItem.type === 'image' ? (
-                                                    <div className="w-full relative">
-                                                        <div className={`w-full ${isExpanded ? '' : 'max-h-80'} overflow-hidden`}>
-                                                            <img
-                                                                src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
-                                                                alt=""
-                                                                className="w-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div className="flex justify-center w-full mt-1">
-                                                            <button
-                                                                onClick={() => toggleExpandMedia(post._id, index)}
-                                                                className="text-blue-500 hover:underline font-medium text-sm"
-                                                            >
-                                                                {isExpanded ? 'Show less' : 'Show more'}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ) : mediaItem.type === 'video' ? (
-                                                    <div className="w-full relative">
-                                                        <div className={`w-full ${isExpanded ? '' : 'max-h-80'} overflow-hidden`}>
-                                                            <video
-                                                                src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
-                                                                controls
-                                                                className="w-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div className="flex justify-center w-full mt-1">
-                                                            <button
-                                                                onClick={() => toggleExpandMedia(post._id, index)}
-                                                                className="text-blue-500 hover:underline font-medium text-sm"
-                                                            >
-                                                                {isExpanded ? 'Show less' : 'Show more'}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ) : null}
-                                            </div>
-                                        );
-                                    })}
+                                    )}
                                 </div>
                             )}
                         </div>
 
-                        <div className='w-full h-12 border-t border-neutral-300 flex justify-around items-center'>
-                            <div
+                        {post.media.length > 0 && (
+                            <div className='w-full flex flex-col gap-3 mb-2'>
+                                {post.media.map((mediaItem, index) => {
+                                    const mediaKey = `${post._id}-${index}`;
+                                    const isExpanded = expandedMedia[mediaKey];
+
+                                    return (
+                                        <div key={index} className="w-full">
+                                            {mediaItem.type === 'image' ? (
+                                                <div className="w-full relative">
+                                                    <div className={`w-full ${isExpanded ? '' : 'max-h-80'} overflow-hidden`}>
+                                                        <img
+                                                            src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
+                                                            alt=""
+                                                            className="w-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex justify-center w-full mt-1">
+                                                        <button
+                                                            onClick={() => toggleExpandMedia(post._id, index)}
+                                                            className="text-blue-500 hover:text-blue-600 hover:underline font-medium text-sm transition-colors duration-200"
+                                                        >
+                                                            {isExpanded ? 'Show less' : 'Show more'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : mediaItem.type === 'video' ? (
+                                                <div className="w-full relative">
+                                                    <div className={`w-full ${isExpanded ? '' : 'max-h-80'} overflow-hidden`}>
+                                                        <video
+                                                            src={`${import.meta.env.VITE_BACKEND_URL}${mediaItem.url}`}
+                                                            controls
+                                                            className="w-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex justify-center w-full mt-1">
+                                                        <button
+                                                            onClick={() => toggleExpandMedia(post._id, index)}
+                                                            className="text-blue-500 hover:text-blue-600 hover:underline font-medium text-sm transition-colors duration-200"
+                                                        >
+                                                            {isExpanded ? 'Show less' : 'Show more'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={`w-full h-12 border-t ${darkMode ? "border-neutral-600" : "border-neutral-300"} flex justify-around items-center`}>
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (post.likes?.some((u) => u._id === user._id)) {
+                                    unlikePost(post._id);
+                                } else {
+                                    likePost(post._id);
+                                }
+                            }}
+                            className={`h-full flex font-semibold ${darkMode ? "text-gray-400 hover:bg-neutral-600" : "text-neutral-500 hover:bg-neutral-200"} items-center justify-center cursor-pointer transition-all duration-200 rounded-md px-2`}
+                        >
+                            <button className="h-full flex items-center z-10 justify-center">
+                                {post.likes?.some((u) => u._id === user._id) ? (
+                                    <FaHeart className="text-red-500" />
+                                ) : (
+                                    <FaRegHeart />
+                                )}
+                            </button>
+                            <button
                                 onClick={(e) => {
-                                    e.stopPropagation(); // Prevent potential parent clicks
-                                    // Check if user has liked it, then unlike, else like
-                                    if (post.likes?.some((u) => u._id === user._id)) {
-                                        unlikePost(post._id);
-                                    } else {
-                                        likePost(post._id);
-                                    }
-                                }}
-                                className="h-full flex font-semibold text-neutral-500 items-center justify-center cursor-pointer hover:bg-neutral-200 transition-all duration-200 rounded-md px-2"
-                            >
-                                <button className="h-full flex items-center z-10 justify-center">
-                                    {post.likes?.some((u) => u._id === user._id) ? (
-                                        <FaHeart className="text-red-500" />
-                                    ) : (
-                                        <FaRegHeart />
-                                    )}
-                                </button>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation(); // Prevent bubbling to the like button's parent div
-                                        setIsLikesModalOpen(true);
-                                        setSelectedPostId(post._id);
-                                    }}
-                                    className="h-full ml-1.5 flex justify-center items-center"
-                                >
-                                    {post?.likes?.length > 0 ? post?.likes?.length : 0} Likes
-                                </button>
-                            </div>
-                            <div
-                                onClick={() => {
-                                    setIsCommentsModalOpen(true);
+                                    e.stopPropagation();
+                                    setIsLikesModalOpen(true);
                                     setSelectedPostId(post._id);
                                 }}
-                                className="h-full flex gap-1.5 font-semibold text-neutral-500 items-center justify-center cursor-pointer hover:bg-neutral-200 transition-all duration-200 rounded-md px-2"
+                                className="h-full ml-1.5 flex justify-center items-center"
                             >
-                                <div className="">< FaRegComment /></div>
-                                <div className="">{post?.comments?.length > 0 ? post?.comments?.length : 0} Comments</div>
-                            </div>
-                            <div
-                                onClick={() => {
-                                    setIsShareModalOpen(true);
-                                    setSelectedPostId(post._id);
-                                }}
-                                className="h-full flex gap-1.5 font-semibold text-neutral-500 items-center justify-center cursor-pointer hover:bg-neutral-200 transition-all duration-200 rounded-md px-2"
-                            >
-                                <div className="">< CiShare2 /></div>
-                                <div className="">Share</div> {/* Ensure sharesCount exists, default to 0 */}
-                            </div>
+                                {post?.likes?.length > 0 ? post?.likes?.length : 0} Likes
+                            </button>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setIsCommentsModalOpen(true);
+                                setSelectedPostId(post._id);
+                            }}
+                            className={`h-full flex gap-1.5 font-semibold ${darkMode ? "text-gray-400 hover:bg-neutral-600" : "text-neutral-500 hover:bg-neutral-200"} items-center justify-center cursor-pointer transition-all duration-200 rounded-md px-2`}
+                        >
+                            <div className=""><FaRegComment /></div>
+                            <div className="">{post?.comments?.length > 0 ? post?.comments?.length : 0} Comments</div>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setIsShareModalOpen(true);
+                                setSelectedPostId(post._id);
+                            }}
+                            className={`h-full flex gap-1.5 font-semibold ${darkMode ? "text-gray-400 hover:bg-neutral-600" : "text-neutral-500 hover:bg-neutral-200"} items-center justify-center cursor-pointer transition-all duration-200 rounded-md px-2`}
+                        >
+                            <div className=""><CiShare2 /></div>
+                            <div className="">Share</div>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* Modals, passed the local 'post' state */}
-            <LikesModal
-                post={post} // Pass the local post object
-                isLikesModalOpen={isLikesModalOpen}
-                setIsLikesModalOpen={setIsLikesModalOpen}
-            />
-
-            <CommensModal
-                content={content}
-                post={post} // Pass the local post object
-                setContent={setContent}
-                addComment={addComment}
-                isCommentsModalOpen={isCommentsModalOpen}
-                setIsCommentsModalOpen={setIsCommentsModalOpen}
-            />
-
-            <ShareModal
-                post={post} // Pass the local post object
-                isShareModalOpen={isShareModalOpen}
-                setIsShareModalOpen={setIsShareModalOpen}
-            />
         </div>
-    );
+        {/* Modals, passed the local 'post' state */}
+        <LikesModal
+            post={post}
+            isLikesModalOpen={isLikesModalOpen}
+            setIsLikesModalOpen={setIsLikesModalOpen}
+        />
+
+        <CommensModal
+            content={content}
+            post={post}
+            setContent={setContent}
+            addComment={addComment}
+            isCommentsModalOpen={isCommentsModalOpen}
+            setIsCommentsModalOpen={setIsCommentsModalOpen}
+        />
+
+        <ShareModal
+            post={post}
+            isShareModalOpen={isShareModalOpen}
+            setIsShareModalOpen={setIsShareModalOpen}
+        />
+    </div>
+);
 }
 
 export default SharedPost;
