@@ -288,7 +288,7 @@ const SettingsPage = ({ darkMode, setUser, user, setDarkMode , privateAccount,se
                                 </div>
                                 <div
                                     onClick={handleLogout}
-                                    className="flex-1 flex justify-center items-center cursor-pointer transform hover:scale-105 transition-all duration-300 border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white h-12 sm:h-14 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300">
+                                    className="flex-1 flex justify-center items-center cursor-pointer transform hover:scale-105 transition-all duration-300 border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white h-12 sm:h-14 rounded-xl font-semibold text-sm sm:text-base ">
                                     🚪 Logout
                                 </div>
                             </div>
