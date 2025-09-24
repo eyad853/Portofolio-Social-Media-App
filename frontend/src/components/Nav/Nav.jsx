@@ -11,6 +11,24 @@ const Nav = ({user,darkMode}) => {
       <div className='ml-0 sm:ml-5 font-bold text-xl sm:text-2xl md:text-3xl'>
         Circle
       </div>
+
+      <div className="h-full flex gap-6 font-bold items-center justify-between">
+        <Link className='cursor-pointer' to={'/home'}>
+          Feed
+        </Link>
+        <Link className='cursor-pointer' to={`/home/profile/${user?._id}`}>
+          Profile
+        </Link>
+        <Link className='cursor-pointer' to={'/home/settings'}>
+          Settings
+        </Link>
+        <Link className='cursor-pointer' to={'/home/notification'}>
+          Notifications
+        </Link>
+        <Link className='cursor-pointer' to={'/home/friends'}>
+          Friends
+        </Link>
+      </div>
        
       {/* account and notifications */}
       <div className='w-auto sm:w-[15%] h-10 mr-2 sm:mr-20 flex justify-between gap-2 sm:gap-3'>

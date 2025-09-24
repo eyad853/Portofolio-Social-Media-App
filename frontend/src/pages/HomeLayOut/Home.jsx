@@ -375,7 +375,7 @@ const handleFollowToggle = async (userId) => {
     ):(<div className={`min-h-screen flex flex-col ${darkMode?"bg-neutral-800 text-white":"bg-gray-100"}`}>
       {/* Fixed header - this will be fixed at the top */}
       <header className='fixed top-0 left-0 right-0 z-10'>
-          <Nav user={user} darkMode={darkMode}/>
+          <Nav isThereUnseenNotfications={isThereUnseenNotfications} user={user} darkMode={darkMode}/>
       </header>
 
       {/* Mobile/Tablet Top Section - Only visible on mobile/tablet */}
