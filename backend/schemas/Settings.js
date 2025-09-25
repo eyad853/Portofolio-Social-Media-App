@@ -8,7 +8,7 @@ const settings = new mongoose.Schema({
     },
     darkMode:{
         type:Boolean,
-        default:false
+        default:true
     },
     privateAccount:{
         type:Boolean,

@@ -32,10 +32,6 @@ const Nav = ({user,darkMode}) => {
        
       {/* account and notifications */}
       <div className='w-auto sm:w-[15%] h-10 mr-2 sm:mr-20 flex justify-between gap-2 sm:gap-3'>
-        {/* notifications */}
-        <Link to={'/home/notification'} className='w-8 h-8 sm:w-10 sm:h-10 rounded-full text-lg sm:text-xl text-black bg-neutral-200 cursor-pointer flex justify-center items-center'>
-          <PiBellSimpleRingingLight />
-        </Link>
          
         {/* profile */}
         <Link to={`/home/profile/${user?._id}`} className='h-full flex-1 flex items-center justify-start overflow-hidden gap-2 sm:gap-3 cursor-pointer'>

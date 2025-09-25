@@ -300,7 +300,7 @@ return (
                         } rounded-2xl border p-6 sm:p-8 mb-8 shadow-xl backdrop-blur-sm hover:shadow-2xl transition-all duration-300`}>
                             <div className="mb-6">
                                 <div className="font-bold text-xl sm:text-2xl mb-2 flex items-center gap-2">
-                                    🎨 Display Settings
+                                    Display Settings
                                 </div>
                                 <div className={`text-sm sm:text-base ${darkMode ? 'text-slate-400' : 'text-gray-600'}`}>
                                     Customize your visual experience

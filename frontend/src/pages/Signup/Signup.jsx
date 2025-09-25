@@ -14,6 +14,8 @@ const Signup = ({setTrigger}) => {
     const [password, setPassword] = useState("");
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [loadings , setLoadings]=useState(false)
+    const [error , setError]=useState('')
 
     // OAuth handlers - these correctly use window.location.href for redirects
     const handleSignUpWithGoogle = () => {
@@ -40,9 +42,11 @@ const Signup = ({setTrigger}) => {
 
         const handleNormalSignup = async (e) => {
         e.preventDefault();
+        setError('')
 
 
         try {
+            setLoadings(true)
             const formData = new FormData();
             formData.append("firstname", firstname);
             formData.append("lastname", lastname);
@@ -61,168 +65,210 @@ const Signup = ({setTrigger}) => {
                 navigate("/home");
             }
         } catch (error) {
-            console.error("Signup failed:", error);
-            alert("Something went wrong");
-        } 
+            setError(error?.response?.data?.message)
+        } finally{
+            setLoadings(false)
+        }
 };
 
     return (
-        <div className='w-screen p-4 lg:p-10 text-white min-h-screen flex justify-center items-center'>
-            <div className='h-auto lg:h-125 shadow-2xl text-black border border-gray-300 p-4 lg:p-10 rounded-xl w-[90vw] lg:w-200 flex flex-col'>
-                    {/* First part: Social Sign-up */}
-                    <div className="w-full lg:w-1/2 h-20 border-b pb-2 flex flex-col items-center justify-center border-gray-200">
-                        <div>
-                            Register with:
-                        </div>
-                        <div className='flex gap-3 mt-3'>
-                            <button
-                                type="button" // Use type="button" to prevent accidental form submission
-                                onClick={handleSignUpWithGoogle}
-                                className='w-32 h-9 transform transition-all duration-200 hover:scale-105 rounded-md bg-gray-500/30 px-16 flex justify-center items-center gap-2'
-                            >
-                                <FaGoogle />
-                                Google
-                            </button>
+        <div className='w-screen h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-2 sm:p-4'>
+        <div className='bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-5xl flex flex-col lg:flex-row lg:h-[600px]'>
+            
+            {/* Left side - Ecommerce Image */}
+            <div className='w-full lg:w-1/2 h-48 sm:h-64 lg:h-full bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-900 relative overflow-hidden lg:flex-shrink-0'>
+                <div className='absolute inset-0 bg-black/20'></div>
+                <div className='relative z-10 h-full flex flex-col justify-center items-center text-white p-4 sm:p-8'>
+                    <div className='text-center mb-4 sm:mb-8'>
+                        <h1 className='text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-4'>Join Our Community</h1>
+                        <p className='text-sm sm:text-base lg:text-lg opacity-90'>Discover new friends and start sharing today</p>
+                    </div>
+                    
+                    {/* Ecommerce Icons/Graphics */}
+                    <div className='flex items-center space-x-4 sm:space-x-8 text-3xl sm:text-5xl lg:text-7xl opacity-80'>
+                        <div className='transform hover:scale-110 transition-transform duration-300'>👥</div>
+                        <div className='transform hover:scale-110 transition-transform duration-300'>💬</div>
+                        <div className='transform hover:scale-110 transition-transform duration-300'>🌐</div>
+                        <div className='transform hover:scale-110 transition-transform duration-300'>📸</div>
+                    </div>
+                    
+                    {/* Floating elements */}
+                    <div className='absolute top-20 left-10 w-3 h-3 bg-white/30 rounded-full animate-pulse'></div>
+                    <div className='absolute bottom-32 right-16 w-2 h-2 bg-white/40 rounded-full animate-pulse delay-300'></div>
+                    <div className='absolute top-40 right-8 w-4 h-4 bg-white/20 rounded-full animate-pulse delay-700'></div>
+                </div>
+            </div>
 
-                            <button
-                                type="button" // Use type="button" to prevent accidental form submission
-                                onClick={handleSignUpWithGithub}
-                                className='w-32 h-9 transform transition-all duration-200 hover:scale-105 rounded-md bg-gray-500/30 px-16 flex justify-center items-center gap-2'
-                            >
-                                <FaGithub />
-                                Github
-                            </button>
+            {/* Right side - Signup Form */}
+            <div className='w-full lg:w-1/2 flex flex-col justify-center p-4 sm:p-6 lg:p-8 lg:h-full'>
+                
+                {/* Header */}
+                <div className='text-center mb-3 lg:mb-4'>
+                    <h2 className='text-xl sm:text-2xl lg:text-2xl font-bold text-gray-800 mb-1 lg:mb-2'>Create Account</h2>
+                    <p className='text-sm sm:text-base lg:text-sm text-gray-600'>Sign up to connect and share your world</p>
+                </div>
+
+                {/* Social Sign-up */}
+                <div className="mb-3 lg:mb-4 pb-3 lg:pb-4 border-b border-gray-200">
+                    <div className='flex flex-col sm:flex-row gap-2 sm:gap-3'>
+                        <button
+                            type="button"
+                            onClick={handleSignUpWithGoogle}
+                            className='flex-1 h-10 sm:h-10 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
+                        >
+                            <FaGoogle />
+                            Google
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={handleSignUpWithGithub}
+                            className='flex-1 h-10 sm:h-10 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
+                        >
+                            <FaGithub />
+                            Github
+                        </button>
+                    </div>
+                </div>
+
+                {/* Normal Signup Form */}
+                <form onSubmit={handleNormalSignup} encType="multipart/form-data" className='flex-1 space-y-2 lg:space-y-3'>
+                    
+                    {/* Name Input */}
+                    <div className="flex gap-5 items-center">
+                    <div>
+                        <label className='block text-xs sm:text-sm lg:text-xs font-semibold text-gray-700 mb-1'>First Name</label>
+                        <div className='relative'>
+                            <div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+                                <LuUserPlus size={16} />
+                            </div>
+                            <input
+                                type="text"
+                                value={firstname}
+                                name='username'
+                                onChange={({ target }) => setFirstname(target.value)}
+                                className='w-full pl-10 pr-4 py-2 lg:py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 text-sm'
+                                placeholder="Enter your first name"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <label className='block text-xs sm:text-sm lg:text-xs font-semibold text-gray-700 mb-1'>Last Name</label>
+                        <div className='relative'>
+                            <div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+                                <LuUserPlus size={16} />
+                            </div>
+                            <input
+                                type="text"
+                                value={lastname}
+                                name='username'
+                                onChange={({ target }) => setLastname(target.value)}
+                                className='w-full pl-10 pr-4 py-2 lg:py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 text-sm'
+                                placeholder="Enter your last name"
+                                required
+                            />
                         </div>
                     </div>
 
-                    {/* Second part: Normal Signup Form */}
-                    {/* IMPORTANT: This form will submit directly to the backend.
-                        The `encType` is crucial for file uploads. */}
-                    <form
-                        onSubmit={handleNormalSignup}
-                        encType="multipart/form-data" // Crucial for file uploads
-                        className='w-full flex flex-col lg:flex-row flex-1'
-                        // No onSubmit handler that calls e.preventDefault()
-                    >
-                    <div className="flex flex-col w-full lg:w-1/2 h-full">
+                    </div>
 
-                        {/* First Name and Last Name */}
-                        <div className='w-full h-auto lg:h-16 mt-8 flex flex-col lg:flex-row justify-around gap-3 lg:gap-0'>
-                            <div className='w-full lg:w-56 lg:mr-2 h-15 flex flex-col'>
-                                <div className='font-md mb-1'>
-                                    First Name
-                                </div>
-                                <div className='rounded-md h-full bg-gray-500/30 flex'>
-                                    <div className='w-10 h-full flex justify-center items-center'>
-                                        <LuUserPlus />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        value={firstname}
-                                        name="firstname" // Important: `name` attribute
-                                        onChange={({ target }) => setFirstname(target.value)}
-                                        className='w-full text-sm rounded-md h-full outline-none px-2'
-                                        required
-                                    />
-                                </div>
+                    {/* Email Input */}
+                    <div>
+                        <label className='block text-xs sm:text-sm lg:text-xs font-semibold text-gray-700 mb-1'>Email Address</label>
+                        <div className='relative'>
+                            <div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+                                <MdOutlineEmail size={16} />
                             </div>
-                            <div className='w-full lg:w-56 h-15 flex flex-col'>
-                                <div className='font-md mb-1'>
-                                    Last Name
-                                </div>
-                                <div className='rounded-md h-full bg-gray-500/30 flex'>
-                                    <div className='w-10 h-full flex justify-center items-center'>
-                                        <LuUserPlus />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        value={lastname}
-                                        name='lastname' // Important: `name` attribute
-                                        onChange={({ target }) => setLastname(target.value)}
-                                        className='w-full text-sm rounded-md h-full outline-none px-2'
-                                        required
-                                    />
-                                </div>
-                            </div>
+                            <input
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={({ target }) => setEmail(target.value)}
+                                className='w-full pl-10 pr-4 py-2 lg:py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 text-sm'
+                                placeholder="Enter your email"
+                                required
+                            />
                         </div>
+                    </div>
 
-                        {/* Email */}
-                        <div className='w-full h-15 flex flex-col mt-4 lg:mt-2'>
-                            <div className='mb-1'>
-                                Email
+                    {/* Password Input */}
+                    <div>
+                        <label className='block text-xs sm:text-sm lg:text-xs font-semibold text-gray-700 mb-1'>Password</label>
+                        <div className='relative'>
+                            <div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+                                <IoLockClosedOutline size={16} />
                             </div>
-                            <div className='flex h-full bg-gray-500/30 rounded-md'>
-                                <div className='w-10 h-full flex justify-center items-center'>
-                                    <MdOutlineEmail />
-                                </div>
+                            <input
+                                type="password"
+                                name="password"
+                                value={password}
+                                onChange={({ target }) => setPassword(target.value)}
+                                className='w-full pl-10 pr-4 py-2 lg:py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 text-sm'
+                                placeholder="Create a password"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    {/* Avatar Upload */}
+                    <div>
+                        <label className='block text-xs sm:text-sm lg:text-xs font-semibold text-gray-700 mb-1'>Profile Picture (Optional)</label>
+                        <div className='flex items-center gap-3 sm:gap-4'>
+                            <div className='w-12 h-12 sm:w-16 sm:h-16 lg:w-14 lg:h-14 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex justify-center items-center overflow-hidden relative flex-shrink-0'>
+                                {preview ? (
+                                    <img src={preview} alt="Profile Preview" className="w-full h-full object-cover" />
+                                ) : (
+                                    <FaUser className="text-gray-400 text-lg sm:text-2xl lg:text-xl" />
+                                )}
                                 <input
-                                    type="email"
-                                    name="email" // Important: `name` attribute
-                                    value={email}
-                                    onChange={({ target }) => setEmail(target.value)}
-                                    className='w-full outline-none h-full text-sm px-2'
-                                    required
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    name='avatar'
+                                    className='absolute inset-0 opacity-0 cursor-pointer'
                                 />
                             </div>
-                        </div>
-
-                        {/* Password */}
-                        <div className='w-full h-15 flex flex-col mt-4 lg:mt-2'>
-                            <div className='mb-1'>
-                                Password
-                            </div>
-                            <div className='flex h-full bg-gray-500/30 rounded-md'>
-                                <div className='w-10 font-bold h-full flex justify-center items-center'>
-                                    <IoLockClosedOutline />
-                                </div>
-                                <input
-                                    type="password"
-                                    name="password" // Important: `name` attribute
-                                    value={password}
-                                    onChange={({ target }) => setPassword(target.value)}
-                                    className='w-full outline-none h-full text-sm px-2'
-                                    required
-                                />
+                            <div className='flex-1 min-w-0'>
+                                <p className='text-xs sm:text-sm lg:text-xs text-gray-600'>Click to upload your profile picture</p>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Signup Button (type="submit" to submit the form) */}
-                        <div className='w-full flex-1 mt-6'>
-                            <button
-                                type='submit' // This will submit the HTML form
-                                className='w-full bg-gradient-to-b transform transition-all duration-200 hover:scale-105 from-blue-600 to-blue-500 h-8 rounded-md flex justify-center items-center font-bold text-white'
-                            >
-                                Sign Up
-                            </button>
-                            <div className='mx-auto mt-5 text-black hover:text-blue-600 transition-all duration-200'>
-                                <p className=''>
-                                    <Link to="/login">Already have an account? Login</Link>
-                                </p>
-                            </div>
-                        </div>
-                      </div>
-                      {/* Right part: Avatar Preview */}
-                      <div className='h-60 lg:h-full w-full lg:w-1/2 flex items-center justify-center '>
-                          <div className='w-48 lg:w-80 ml-4 lg:ml-10 relative h-48 lg:h-80 text-white bg-gray-900 hover:bg-gray-950 transition-all duration-200 rounded-full'>
-                              <div className='w-full h-full rounded-full text-white flex justify-center items-end overflow-hidden'>
-                                  {preview ? (
-                                      <img src={preview} alt="Profile Preview" className="w-full h-full object-cover" />
-                                  ) : (
-                                      <FaUser size={160} className="lg:size-[300px] lg:mt-30" />
-                                  )}
-                                  <input
-                                      type="file"
-                                      onChange={handleFileChange}
-                                      name='avatar'
-                                      className='absolute w-full h-full rounded-full opacity-0 cursor-pointer'
-                                  />
-                              </div>
-                          </div>
-                      </div>
-                    </form>
+                    {/* Action Buttons */}
+                    <div className='space-y-2 pt-2 lg:pt-3'>
+                        <button
+                            type='submit'
+                            disabled={loadings}
+                            className='w-full py-2 lg:py-2.5 bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-900 hover:from-neutral-800 hover:to-neutral-700 text-white font-semibold rounded-lg transform transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:transform-none text-sm'
+                        >
+                            {loadings ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </div>
 
+                    {/* Login Link */}
+                    <div className='text-center pt-2'>
+                        <p className='text-xs sm:text-sm lg:text-xs text-gray-600'>
+                            Already have an account? {' '}
+                            <Link to="/login" className='text-blue-600 hover:text-purple-600 font-semibold transition-colors duration-200'>
+                                Sign In
+                            </Link>
+                        </p>
+                    </div>
+
+                </form>
             </div>
         </div>
+
+        {/* Loading Overlay */}
+        {loadings && (
+            <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+                <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin mb-4"></div>
+                    <p className="text-gray-700 font-medium">Creating your account...</p>
+                </div>
+            </div>
+        )}
+    </div>
     );
 };
 
