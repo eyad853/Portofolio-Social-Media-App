@@ -72,11 +72,11 @@ const Signup = ({setTrigger}) => {
 };
 
     return (
-        <div className='w-screen h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-2 sm:p-4'>
-        <div className='bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-5xl flex flex-col lg:flex-row lg:h-[600px]'>
+        <div className='w-full bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-2 sm:p-4'>
+        <div className='bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-5xl flex flex-col lg:flex-row lg:min-h-[600px]'>
             
             {/* Left side - Ecommerce Image */}
-            <div className='w-full lg:w-1/2 h-48 sm:h-64 lg:h-full bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-900 relative overflow-hidden lg:flex-shrink-0'>
+            <div className='w-full lg:w-1/2 h-48 sm:h-64 lg:h-auto lg:flex-1 bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-900 relative overflow-hidden lg:flex-shrink-0'>
                 <div className='absolute inset-0 bg-black/20'></div>
                 <div className='relative z-10 h-full flex flex-col justify-center items-center text-white p-4 sm:p-8'>
                     <div className='text-center mb-4 sm:mb-8'>
@@ -233,6 +233,12 @@ const Signup = ({setTrigger}) => {
                             </div>
                         </div>
                     </div>
+
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg text-xs sm:text-sm">
+                            {error}
+                        </div>
+                    )}
 
                     {/* Action Buttons */}
                     <div className='space-y-2 pt-2 lg:pt-3'>
