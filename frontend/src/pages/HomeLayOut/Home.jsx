@@ -314,6 +314,8 @@ try {
 };
 
 const getUserFollowers = async () => {
+    if(!user)return
+
 try {
     const response = await axios.get(`${API_URL}/user/followers`, { withCredentials: true });
     setUserFollowers(response.data.followers);
@@ -324,6 +326,7 @@ try {
 };
 
 const getUserFollowing = async () => {
+    if(!user)return
 try {
     const response = await axios.get(`${API_URL}/user/following`, { withCredentials: true });
      const followingIds = response.data.following.map(f => f.following._id);

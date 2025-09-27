@@ -71,7 +71,6 @@ const fetchUser = async()=>{
           }
       })
       .catch(error => {
-          console.error('Error fetching user:', error);
           setUser(null)
       });
       setLoadingUser(false)
@@ -90,8 +89,11 @@ const fetchAllPosts = async()=>{
 }
   useEffect(()=>{
     fetchUser()
-    fetchAllPosts()
   },[trigger])
+  
+  useEffect(()=>{
+    fetchAllPosts()
+  },[])
 
   //  useEffect(() => {
   //   const loadStories = async () => {

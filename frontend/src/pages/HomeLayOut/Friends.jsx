@@ -38,7 +38,7 @@ const Friends = ({socket , user , darkMode}) => {
         getRequests()
     },[])
 
-    const hasRequested = (uid) =>requests.some((r) => r.requester._id === user._id && r.recipient._id === uid);
+    const hasRequested = (uid) =>requests.some((r) => r?.requester?._id === user?._id && r?.recipient?._id === uid);
 
     const sendRequest = async (recipientId) => {
         // Optimistically update UI
