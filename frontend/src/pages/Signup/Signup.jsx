@@ -114,7 +114,7 @@ const Signup = ({setTrigger}) => {
                         <button
                             type="button"
                             onClick={handleSignUpWithGoogle}
-                            className='flex-1 h-10 sm:h-10 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
+                            className='flex-1 h-10 sm:h-10 py-1 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
                         >
                             <FaGoogle />
                             Google
@@ -123,7 +123,7 @@ const Signup = ({setTrigger}) => {
                         <button
                             type="button"
                             onClick={handleSignUpWithGithub}
-                            className='flex-1 h-10 sm:h-10 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
+                            className='flex-1 h-10 sm:h-10 py-1 transform transition-all duration-200 hover:scale-105 rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 text-white flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-sm font-medium'
                         >
                             <FaGithub />
                             Github
