@@ -58,7 +58,7 @@ const Login = ({setTrigger}) => {
     // -------------------------------------------------------------
 
     return (
-        <div className='w-full bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-2 sm:p-4'>
+        <div className='w-full h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-2 sm:p-4'>
                 <div className='bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-5xl flex flex-col lg:flex-row lg:min-h-[400px]'>
                     
                     {/* Left side - Ecommerce Image */}
