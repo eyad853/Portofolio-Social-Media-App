@@ -57,8 +57,8 @@ const Notifications = ({user , socket , setTrigger, darkMode,fetchUser}) => {
           ? { ...notif, type: action === 'accept' ? 'friend_accepted' : 'friend_rejected' }
           : notif
         ))
-      setTrigger(prev=>prev+1)
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/respondRequest/${requesterId}`, {action}, {withCredentials: true})
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/respondRequest/${requesterId}`, {action}, {withCredentials: true})
+        setTrigger(prev=>prev+1)
     } catch (err) {
       console.log(err)
     }
